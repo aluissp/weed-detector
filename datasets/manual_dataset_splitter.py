@@ -1,6 +1,7 @@
 import os
 import cv2
 import json
+from utils import show_image
 from preprocessing import BasePreprocessor
 
 
@@ -26,9 +27,9 @@ class ManualDatasetSplitter:
         if self.preprocessors is None:
             self.preprocessors = []
 
-        dataset_filename = 'dataset_splitter_info.json'
+        json_path = ['out', 'dataset', 'dataset_splitter_info.json']
 
-        dataset_splitter_info = os.path.join('out', 'dataset')
+        dataset_splitter_info = os.path.join(json_path[0], json_path[1])
 
         try:
             os.makedirs(dataset_splitter_info, exist_ok=True)
@@ -36,9 +37,7 @@ class ManualDatasetSplitter:
         except:
             pass
 
-        dataset_splitter_info = os.path.join(
-            dataset_splitter_info, dataset_filename
-        )
+        dataset_splitter_info = os.path.join(*json_path)
 
         if os.path.exists(dataset_splitter_info):
 
@@ -50,7 +49,7 @@ class ManualDatasetSplitter:
             data = {
                 'current_file_id': 1,
                 'images_read': [],
-                'json_path': ['out', 'dataset', 'dataset_splitter_info.json']
+                'json_path': json_path
             }
 
             with open(dataset_splitter_info, 'w') as file:
@@ -75,9 +74,8 @@ class ManualDatasetSplitter:
 
             image_name = os.path.split(image_path)[-1]
 
-            cv2.namedWindow(f'Image: {image_name}', cv2.WINDOW_NORMAL)
-            cv2.imshow(f'Image {image_name}', image)
-            cv2.waitKey(0)
+            title = f'Image: {image_name}'
+            show_image(image, title=title)
 
             correct = input('Is this image correct? ([Y]/n): ')
 
@@ -100,5 +98,3 @@ class ManualDatasetSplitter:
 
             with open(json_path, 'w') as file:
                 json.dump(self.dataset_splitter_info, file)
-
-        cv2.destroyAllWindows()
