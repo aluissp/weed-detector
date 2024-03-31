@@ -79,6 +79,8 @@ class ManualDatasetSplitter:
 
             correct = input('Is this image correct? ([Y]/n): ')
 
+            self.dataset_splitter_info['images_read'].append(image_path)
+
             if correct.lower() == 'n':
                 continue
 
@@ -94,7 +96,6 @@ class ManualDatasetSplitter:
             current_id += 1
 
             self.dataset_splitter_info['current_file_id'] = current_id
-            self.dataset_splitter_info['images_read'].append(image_path)
 
             with open(json_path, 'w') as file:
                 json.dump(self.dataset_splitter_info, file)
