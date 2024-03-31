@@ -31,8 +31,8 @@ class ManualDatasetSplitter:
         dataset_splitter_info = os.path.join('out', 'dataset')
 
         try:
-            os.makedirs(dataset_splitter_info)
-            os.makedirs(dir_to_save_images)
+            os.makedirs(dataset_splitter_info, exist_ok=True)
+            os.makedirs(dir_to_save_images, exist_ok=True)
         except:
             pass
 
@@ -47,7 +47,11 @@ class ManualDatasetSplitter:
 
             self.dataset_splitter_info = data
         else:
-            data = {'current_file_id': 1, 'folders_read': []}
+            data = {
+                'current_file_id': 1,
+                'images_read': [],
+                'json_path': ['out', 'dataset', 'dataset_splitter_info.json']
+            }
 
             with open(dataset_splitter_info, 'w') as file:
                 json.dump(data, file)
@@ -60,8 +64,13 @@ class ManualDatasetSplitter:
         '''
 
         current_id = self.dataset_splitter_info['current_file_id']
+        images_read = self.dataset_splitter_info['images_read']
+        image_paths = list(
+            filter(lambda p: p not in images_read, self.image_paths)
+        )
+        json_path = os.path.join(*self.dataset_splitter_info['json_path'])
 
-        for image_path in self.image_paths:
+        for image_path in image_paths:
             image = cv2.imread(image_path)
 
             image_name = os.path.split(image_path)[-1]
@@ -80,17 +89,16 @@ class ManualDatasetSplitter:
 
             image_name = f'{str(current_id).zfill(5)}.jpg'
 
-            image_path = os.path.join(self.dir_to_save_images, image_name)
-            print(image_path)
+            path_to_save = os.path.join(self.dir_to_save_images, image_name)
 
-            print(cv2.imwrite(image_path, image))
+            cv2.imwrite(path_to_save, image)
 
             current_id += 1
 
             self.dataset_splitter_info['current_file_id'] = current_id
+            self.dataset_splitter_info['images_read'].append(image_path)
 
-        folders_read = os.path.split(image_path)[-2]
-
-        self.dataset_splitter_info['folders_read'].append(folders_read)
+            with open(json_path, 'w') as file:
+                json.dump(self.dataset_splitter_info, file)
 
         cv2.destroyAllWindows()
