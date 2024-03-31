@@ -1,0 +1,96 @@
+import os
+import cv2
+import json
+from preprocessing import BasePreprocessor
+
+
+class ManualDatasetSplitter:
+    def __init__(self,
+                 image_paths: list[str],
+                 dir_to_save_images: str,
+                 preprocessors: list[BasePreprocessor] = None):
+        '''
+        This class helps you detach the images that you consider wrong and save the
+        correct ones in another folder.
+
+        Args:
+        ----
+            image_paths (list[str]): A list of paths to the images that you want to split.
+            dir_to_save_images (str): The directory where the correct images will be saved.
+            preprocessors (list[BasePreprocessor]): A list of preprocessors to be applied to the images.
+        '''
+        self.image_paths = image_paths
+        self.dir_to_save_images = dir_to_save_images
+        self.preprocessors = preprocessors
+
+        if self.preprocessors is None:
+            self.preprocessors = []
+
+        dataset_filename = 'dataset_splitter_info.json'
+
+        dataset_splitter_info = os.path.join('out', 'dataset')
+
+        try:
+            os.makedirs(dataset_splitter_info)
+            os.makedirs(dir_to_save_images)
+        except:
+            pass
+
+        dataset_splitter_info = os.path.join(
+            dataset_splitter_info, dataset_filename
+        )
+
+        if os.path.exists(dataset_splitter_info):
+
+            with open(dataset_splitter_info, 'r') as file:
+                data = json.load(file)
+
+            self.dataset_splitter_info = data
+        else:
+            data = {'current_file_id': 1, 'folders_read': []}
+
+            with open(dataset_splitter_info, 'w') as file:
+                json.dump(data, file)
+
+            self.dataset_splitter_info = data
+
+    def run(self):
+        '''
+        This method will start the process of splitting the images.
+        '''
+
+        current_id = self.dataset_splitter_info['current_file_id']
+
+        for image_path in self.image_paths:
+            image = cv2.imread(image_path)
+
+            image_name = os.path.split(image_path)[-1]
+
+            cv2.namedWindow(f'Image: {image_name}', cv2.WINDOW_NORMAL)
+            cv2.imshow(f'Image {image_name}', image)
+            cv2.waitKey(0)
+
+            correct = input('Is this image correct? ([Y]/n): ')
+
+            if correct.lower() == 'n':
+                continue
+
+            for preprocessor in self.preprocessors:
+                image = preprocessor.preprocess(image)
+
+            image_name = f'{str(current_id).zfill(5)}.jpg'
+
+            image_path = os.path.join(self.dir_to_save_images, image_name)
+            print(image_path)
+
+            print(cv2.imwrite(image_path, image))
+
+            current_id += 1
+
+            self.dataset_splitter_info['current_file_id'] = current_id
+
+        folders_read = os.path.split(image_path)[-2]
+
+        self.dataset_splitter_info['folders_read'].append(folders_read)
+
+        cv2.destroyAllWindows()
