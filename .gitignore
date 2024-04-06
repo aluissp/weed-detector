@@ -4,5 +4,6 @@
 *.keras
 __pycache__
 out/*
+roboflow.config.yaml
 
 !out/.gitkeep
