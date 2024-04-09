@@ -1,5 +1,6 @@
 ---
-config:
-  api-key:
-  workspace-id:
-  project-id:
+api-key:
+workspace-id:
+project-id:
+batch-name:
+dataset-dir:

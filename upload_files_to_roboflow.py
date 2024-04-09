@@ -1,19 +1,20 @@
-from roboflow import Roboflow
+import yaml
+from imutils import paths
+from datasets import UploadDatasetRoboflow
 
 
-rf = Roboflow(api_key="YOUR_PRIVATE_API_KEY")
+with open('roboflow.config.yaml') as file:
+    config = yaml.safe_load(file)
 
-print(rf.workspace())
-
-workspaceId = 'my-workspace'
-projectId = 'my-project'
-project = rf.workspace(workspaceId).project(projectId)
-
-project.upload("UPLOAD_IMAGE.jpg")
+image_paths = list(paths.list_images(config['dataset-dir']))
 
 
-project.upload(
-    image_path="UPLOAD_IMAGE.jpg",
-    batch_name="YOUR_BATCH_NAME",
-    num_retry_uploads=10,
+uploader = UploadDatasetRoboflow(
+    image_paths=image_paths,
+    api_key=config['api-key'],
+    batch_name=config['batch-name'],
+    project_id=config['project-id'],
+    workspace_id=config['workspace-id'],
 )
+
+uploader.run()
