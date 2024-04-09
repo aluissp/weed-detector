@@ -71,9 +71,8 @@ class UploadDatasetRoboflow:
             self.project.upload(
                 image_path=image_path,
                 batch_name=self.batch_name,
-                num_retry_uploads=10,
+                num_retry_uploads=3,
             )
-
             self.roboflow_info['images_uploaded'].append(image_path)
 
             with open(json_path, 'w') as file:
