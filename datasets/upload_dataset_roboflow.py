@@ -9,9 +9,10 @@ class UploadDatasetRoboflow:
         self,
         image_paths: list[str],
         api_key: str,
-        batch_name: str,
         project_id: str,
+        batch_name: str,
         workspace_id: str,
+        num_retry_uploads: int
     ):
         '''
         This class helps you to upload images to Roboflow.
@@ -27,6 +28,8 @@ class UploadDatasetRoboflow:
         self.image_paths = image_paths
         self.rf = Roboflow(api_key=api_key)
         self.batch_name = batch_name
+        self.num_retry_uploads = num_retry_uploads
+        self.project_id = project_id
 
         self.project = self.rf.workspace(workspace_id).project(project_id)
 
@@ -59,21 +62,45 @@ class UploadDatasetRoboflow:
         This method uploads the images to Roboflow.
         '''
 
-        images_uploaded = self.roboflow_info['images_uploaded']
-
-        image_paths = list(
-            filter(lambda p: p not in images_uploaded, self.image_paths)
-        )
-
-        json_path = os.path.join(*self.roboflow_info['json_path'])
+        image_paths = self.check_images_uploaded()
 
         for image_path in tqdm(image_paths, desc='[INFO] Uploading images'):
             self.project.upload(
                 image_path=image_path,
                 batch_name=self.batch_name,
-                num_retry_uploads=3,
+                num_retry_uploads=self.num_retry_uploads,
             )
-            self.roboflow_info['images_uploaded'].append(image_path)
 
-            with open(json_path, 'w') as file:
-                json.dump(self.roboflow_info, file)
+        self.check_images_uploaded()
+
+    def check_images_uploaded(self):
+        '''
+        This method checks the images that have been uploaded.
+        '''
+        records = []
+
+        for page in self.rf.project(self.project_id).search_all(
+            offset=0,
+            limit=1000,
+            in_dataset=False,
+            fields=['id', 'name']
+        ):
+            records.extend(page)
+
+        records = list(
+            map(lambda r: r['name'], records)
+        )
+
+        image_paths = list(filter(
+            lambda p: os.path.split(p)[-1] not in records,
+            self.image_paths
+        ))
+
+        json_path = os.path.join(*self.roboflow_info['json_path'])
+
+        self.roboflow_info['images_uploaded'] = records
+
+        with open(json_path, 'w') as file:
+            json.dump(self.roboflow_info, file)
+
+        return image_paths

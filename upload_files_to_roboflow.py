@@ -15,6 +15,7 @@ uploader = UploadDatasetRoboflow(
     batch_name=config['batch-name'],
     project_id=config['project-id'],
     workspace_id=config['workspace-id'],
+    num_retry_uploads=config['num-retry-uploads']
 )
 
 uploader.run()

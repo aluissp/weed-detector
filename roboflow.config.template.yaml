@@ -3,4 +3,5 @@ api-key:
 workspace-id:
 project-id:
 batch-name:
+num-retry-uploads:
 dataset-dir:
