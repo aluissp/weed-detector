@@ -99,6 +99,7 @@ class UploadDatasetRoboflow:
         json_path = os.path.join(*self.roboflow_info['json_path'])
 
         self.roboflow_info['images_uploaded'] = records
+        self.roboflow_info['images_pending'] = image_paths
 
         with open(json_path, 'w') as file:
             json.dump(self.roboflow_info, file)
