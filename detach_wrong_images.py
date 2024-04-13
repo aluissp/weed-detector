@@ -17,6 +17,10 @@ ap.add_argument(
     '--preprocess-aspect-aware-size', type=int, default=-1,
     help='Preprocess the images to be aspect-aware.'
 )
+ap.add_argument(
+    '-r', '--reset-register', action='store_true',
+    help='Reset the register of the images.'
+)
 
 args = vars(ap.parse_args())
 
@@ -34,7 +38,8 @@ if args['preprocess_aspect_aware_size'] > 0:
 splitter = ManualDatasetSplitter(
     image_paths=image_paths,
     dir_to_save_images=args['output_dir'],
-    preprocessors=preprocessors
+    preprocessors=preprocessors,
+    reset_register=args['reset_register']
 )
 
 

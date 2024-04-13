@@ -9,7 +9,8 @@ class ManualDatasetSplitter:
     def __init__(self,
                  image_paths: list[str],
                  dir_to_save_images: str,
-                 preprocessors: list[BasePreprocessor] = None):
+                 preprocessors: list[BasePreprocessor] = None,
+                 reset_register: bool = False):
         '''
         This class helps you detach the images that you consider wrong and save the
         correct ones in another folder.
@@ -19,6 +20,7 @@ class ManualDatasetSplitter:
             image_paths (list[str]): A list of paths to the images that you want to split.
             dir_to_save_images (str): The directory where the correct images will be saved.
             preprocessors (list[BasePreprocessor]): A list of preprocessors to be applied to the images.
+            reset_register (bool): If True, the register of the images will be reset.
         '''
         self.image_paths = image_paths
         self.dir_to_save_images = dir_to_save_images
@@ -39,7 +41,7 @@ class ManualDatasetSplitter:
 
         dataset_splitter_info = os.path.join(*json_path)
 
-        if os.path.exists(dataset_splitter_info):
+        if os.path.exists(dataset_splitter_info) and not reset_register:
 
             with open(dataset_splitter_info, 'r') as file:
                 data = json.load(file)
