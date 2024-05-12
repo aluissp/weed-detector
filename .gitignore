@@ -7,3 +7,4 @@ out/*
 roboflow.config.yaml
 
 !out/.gitkeep
+!rt-detr-weed-detector.ipynb
