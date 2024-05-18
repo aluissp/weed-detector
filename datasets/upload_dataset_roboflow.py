@@ -80,8 +80,6 @@ class UploadDatasetRoboflow:
         records = []
 
         for page in self.rf.project(self.project_id).search_all(
-            offset=0,
-            limit=1000,
             in_dataset=False,
             fields=['id', 'name']
         ):
