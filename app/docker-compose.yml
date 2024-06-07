@@ -1,0 +1,51 @@
+services:
+  pipenv:
+    container_name: weed-detector-pipenv
+    build:
+      dockerfile: ./server/Dockerfile
+      target: builder
+    image: weed-detector/backend:0.1.0
+    # user: ${DOCKER_USER}
+    command: pipenv install
+    volumes:
+      - ./server:/code
+
+  server:
+    container_name: weed-detector-server
+    image: weed-detector/backend:0.1.0
+    # user: ${DOCKER_USER}
+    ports:
+      - 5000:5000
+    depends_on:
+      pipenv:
+        condition: service_completed_successfully
+    command: pipenv run flask --app src/app.py --debug run --host 0.0.0.0
+    volumes:
+      - ./server:/code
+      - ./:/workspace:cached
+
+  yarn:
+    image: node:22
+    # user: ${DOCKER_USER}
+    container_name: weed-detector-yarn
+    working_dir: /code
+    volumes:
+      - ./client:/code
+    command: yarn
+
+  client:
+    image: node:22
+    # user: ${DOCKER_USER}
+    container_name: weed-detector-client
+    working_dir: /code
+    volumes:
+      - ./client:/code
+      - ./:/workspace:cached
+    ports:
+      - 5173:5173
+    depends_on:
+      yarn:
+        condition: service_completed_successfully
+      server:
+        condition: service_started
+    command: yarn dev --host

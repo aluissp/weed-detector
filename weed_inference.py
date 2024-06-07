@@ -1,11 +1,11 @@
 import argparse
-from imutils import paths
+from inference import InferenceImages
 
 
 ap = argparse.ArgumentParser()
 ap.add_argument(
-    '-d', '--image-testing-dir', required=True,
-    help='Path to the directory containing the images to be tested'
+    '-d', '--images-dir', required=True,
+    help='Directory containing the images to be tested'
 )
 ap.add_argument(
     '-m', '--model-path', required=True,
@@ -16,13 +16,16 @@ ap.add_argument(
     help='Save the inferences?'
 )
 ap.add_argument(
-    '-o', '--output-dir', type=str, default='out/inferences',
+    '-o', '--output-path', type=str, default='out/inferences',
     help='Path where the inferences will be saved.'
+)
+ap.add_argument(
+    '-n', '--num-images', type=int, default=-1,
+    help='Number of images to be tested, -1 for all images.'
 )
 
 
 args = vars(ap.parse_args())
 
-image_paths = list(paths.list_images(args['image_testing_dir']))
 
-print('args:', args)
+InferenceImages(**args).run()

@@ -1,0 +1,13 @@
+{
+	"name": "Server Dev",
+	"dockerComposeFile": ["../docker-compose.yml"],
+	"service": "server",
+	"shutdownAction": "none",
+	"workspaceFolder": "/workspace/server",
+	"extensions": [
+		"ms-python.python",
+		"ms-python.vscode-pylance",
+		"ms-python.debugpy",
+		"ms-python.autopep8"
+	]
+}
