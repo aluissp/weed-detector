@@ -1,0 +1,17 @@
+{
+	"name": "Client Dev",
+	"dockerComposeFile": ["../docker-compose.yml"],
+	"service": "client",
+	"shutdownAction": "none",
+	"workspaceFolder": "/workspace/client",
+	"extensions": [
+		"dsznajder.es7-react-js-snippets",
+		"esbenp.prettier-vscode",
+		"mechatroner.rainbow-csv",
+		"christian-kohler.npm-intellisense",
+		"burkeholland.simple-react-snippets",
+		"bradlc.vscode-tailwindcss",
+		"pmneo.tsimporter",
+		"dbaeumer.vscode-eslint"
+	]
+}
