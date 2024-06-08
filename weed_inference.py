@@ -16,10 +16,6 @@ ap.add_argument(
     help='Save the inferences?'
 )
 ap.add_argument(
-    '-o', '--output-path', type=str, default='out/inferences',
-    help='Path where the inferences will be saved.'
-)
-ap.add_argument(
     '-n', '--num-images', type=int, default=-1,
     help='Number of images to be tested, -1 for all images.'
 )

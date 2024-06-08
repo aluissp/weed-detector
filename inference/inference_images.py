@@ -9,13 +9,11 @@ from ultralytics import RTDETR
 class InferenceImages:
 
     def __init__(self, model_path: str, images_dir: str,
-                 output_path: str = 'out/inferences', num_images: int = -1,
-                 save_inferences: bool = False
+                 num_images: int = -1, save_inferences: bool = False
                  ):
 
         self.model_path = model_path
         self.images_dir = images_dir
-        self.output_path = output_path
         self.num_images = num_images
         self.save_inferences = save_inferences
 
@@ -58,7 +56,7 @@ class InferenceImages:
                 'speed': result.speed
             }
 
-            with open('runs/inference_results.json', 'w') as file:
+            with open('runs/detect/inference_results.json', 'w') as file:
                 json.dump(inference_results, file)
 
     def load_images(self):
