@@ -1,7 +1,8 @@
 import os
 from flask import Flask, request, send_file
 from .inference import InferenceImages
-from .utils import delete_files, save_image, get_folderpath, get_runs_path, compress_directory
+from .utils import (delete_files, save_image, get_folderpath,
+                    get_runs_path, compress_directory, get_img_predict_params)
 
 
 app = Flask(__name__)
@@ -28,11 +29,14 @@ def predict_weeds():
 
     runs_path = get_runs_path(__file__)
 
+    inference_params = get_img_predict_params(request.args)
+
     InferenceImages(
         model_path=os.path.join(app.config['models'], 'rt-detr-best.pt'),
         images_dir=app.config['imgs'],
         save_inferences=True,
         runs_path=runs_path,
+        inference_params=inference_params,
     ).run()
 
     file_compressed_path = compress_directory(runs_path)

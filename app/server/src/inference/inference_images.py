@@ -14,7 +14,8 @@ class InferenceImages:
         images_dir: str,
         num_images: int = -1,
         runs_path: str = None,
-        save_inferences: bool = False
+        save_inferences: bool = False,
+        inference_params: dict = None,
     ):
 
         self.runs_path = runs_path
@@ -22,6 +23,7 @@ class InferenceImages:
         self.images_dir = images_dir
         self.num_images = num_images
         self.save_inferences = save_inferences
+        self.inference_params = inference_params
 
         self.model = None
         self.image_paths = None
@@ -38,14 +40,19 @@ class InferenceImages:
 
         rmtree(self.runs_path) if os.path.exists(self.runs_path) else None
 
+        params = {
+            'show_labels': True,
+            'show_conf': True,
+            'save_txt': True,
+            'save_conf': True,
+            'line_width': 3,
+            **self.inference_params
+        }
+
         self.results = self.model.predict(
             self.image_paths,
             save=self.save_inferences,
-            show_labels=True,
-            show_conf=True,
-            save_txt=True,
-            save_conf=True,
-            line_width=3,
+            **params
         )
 
     def process_results(self):
