@@ -2,3 +2,8 @@
 __pycache__
 
 !.vscode
+
+*.pt
+*.keras
+*.avi
+*.mp4

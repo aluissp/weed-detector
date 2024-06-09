@@ -13,9 +13,11 @@ class InferenceImages:
         model_path: str,
         images_dir: str,
         num_images: int = -1,
+        runs_path: str = None,
         save_inferences: bool = False
     ):
 
+        self.runs_path = runs_path
         self.model_path = model_path
         self.images_dir = images_dir
         self.num_images = num_images
@@ -34,15 +36,16 @@ class InferenceImages:
 
         print('[INFO] Predicting...')
 
-        rmtree('runs') if os.path.exists('runs') else None
+        rmtree(self.runs_path) if os.path.exists(self.runs_path) else None
 
         self.results = self.model.predict(
             self.image_paths,
             save=self.save_inferences,
-            show_labels=False,
-            show_conf=False,
+            show_labels=True,
+            show_conf=True,
             save_txt=True,
             save_conf=True,
+            line_width=3,
         )
 
     def process_results(self):
@@ -60,7 +63,9 @@ class InferenceImages:
                 'speed': result.speed
             }
 
-            with open('runs/detect/inference_results.json', 'w') as file:
+            json_path = os.path.join(self.runs_path, 'inference_results.json')
+
+            with open(json_path, 'w') as file:
                 json.dump(inference_results, file)
 
     def load_images(self):
