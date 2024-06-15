@@ -7,15 +7,15 @@ const defaultStyles =
 	'bg-white w-full rounded-lg p-[6px] outline-none placeholder:text-dark text-sm text-dark';
 
 export const FormInput = forwardRef(function FormInput(props, ref) {
-	const { labelText, labelIsRequiredTick, error, className, ...inputProps } = props;
+	const { id, labelText, labelIsRequiredTick, error, className, ...inputProps } = props;
 
 	return (
 		<div>
-			<label className='block text-sm font-medium'>
+			<label htmlFor={id} className='block text-sm font-medium'>
 				{labelText} {labelIsRequiredTick && <span className='text-red-500'>*</span>}
 			</label>
 			<div className='relative'>
-				<input ref={ref} className={twMerge(defaultStyles, className)} {...inputProps} />
+				<input id={id} ref={ref} className={twMerge(defaultStyles, className)} {...inputProps} />
 			</div>
 			<InputError error={error} />
 		</div>
