@@ -3,10 +3,6 @@
 @tailwind utilities;
 
 @layer base {
-	html {
-		font-family: 'DM Sans', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-	}
-
 	.dotted-background {
 		background-image: radial-gradient(#181818 5%, #0000001f 15%);
 		background-color: #000;
