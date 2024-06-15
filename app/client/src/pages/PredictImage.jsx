@@ -59,6 +59,7 @@ export const PredictImage = () => {
 							error={errorImgz?.message}
 							placeholder='Ingrese un valor en pixeles'
 							{...register(inputNames.imgsz, {
+								required: 'Este campo es requerido',
 								min: { value: 32, message: 'El valor mínimo es 32' },
 								max: { value: 1920, message: 'El valor máximo es 1920' },
 							})}
@@ -71,6 +72,7 @@ export const PredictImage = () => {
 							error={errorMaxDet?.message}
 							placeholder='Ingrese un valor entero'
 							{...register(inputNames.max_det, {
+								required: 'Este campo es requerido',
 								min: { value: 1, message: 'El valor mínimo es 1' },
 								max: { value: 1000, message: 'El valor máximo es 1000' },
 							})}
