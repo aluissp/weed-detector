@@ -8,7 +8,8 @@ const fileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
 export const useReadDropzoneImage = () => {
 	const { dropzoneStatus, uiDispatch } = useContext(UiContext);
-	const { readImage, handleSaveImageInContext, handleSetMessages } = useImagesContext();
+	const { readImage, readImageFile, handleSaveImageInContext, handleSetMessages } =
+		useImagesContext();
 
 	const handleChangeFile = files => {
 		const [selectedFile] = files;
@@ -34,7 +35,7 @@ export const useReadDropzoneImage = () => {
 
 		reader.onload = ({ target }) => {
 			// Save image in context
-			handleSaveImageInContext({ target });
+			handleSaveImageInContext({ imageFile: selectedFile, target });
 
 			// Set success message
 			handleSetMessages({
@@ -47,5 +48,5 @@ export const useReadDropzoneImage = () => {
 		};
 	};
 
-	return { readImage, dropzoneStatus, handleChangeFile };
+	return { readImage, readImageFile, dropzoneStatus, handleChangeFile };
 };

@@ -1,32 +1,15 @@
-import { useForm } from 'react-hook-form';
+import { PiBroomBold } from 'react-icons/pi';
 import { TbPhotoSearch } from 'react-icons/tb';
 import { SquareDropzone } from '../components';
 import { FormButton, FormInput, RangeInput, ToggleInput } from '../common/components';
-import { useReadDropzoneImage, useUiContext } from '../hooks';
-import {
-	defaultPredictParameters,
-	dropzoneStatus as constantDropzoneStatus,
-	inputNames,
-} from '../constants';
-import { PiBroomBold } from 'react-icons/pi';
+import { useImagePredictForm, useReadDropzoneImage, useUiContext } from '../hooks';
+import { inputNames, dropzoneStatus as constantDropzoneStatus } from '../constants';
 
 export const PredictImage = () => {
 	const { handleCleanDropzoneData } = useUiContext();
 	const { readImage, dropzoneStatus, handleChangeFile } = useReadDropzoneImage();
-	const {
-		register,
-		handleSubmit,
-		control,
-		formState: { errors, isSubmitting },
-	} = useForm({ defaultValues: defaultPredictParameters });
-
-	const { [inputNames.imgsz]: errorImgz, [inputNames.max_det]: errorMaxDet } = errors;
-
-	const handlePredictImage = data => {
-		console.log('Predicting image with data:', data);
-		console.log('Is submitting:', isSubmitting);
-		console.log(readImage);
-	};
+	const { control, errorImgz, errorMaxDet, handlePredictImage, handleSubmit, register } =
+		useImagePredictForm();
 
 	return (
 		<section className='grid md:grid-cols-2 gap-x-2 items-start md:justify-between w-full text-white animate-fade'>

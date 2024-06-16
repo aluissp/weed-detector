@@ -4,8 +4,9 @@ import { ImagesContext } from '../context';
 
 export const useImagesContext = () => {
 	const {
-		readImage,
 		message,
+		readImage,
+		readImageFile,
 		predictedImage,
 		predictionData,
 		predictedHistory,
@@ -24,14 +25,26 @@ export const useImagesContext = () => {
 		}, 100);
 	};
 
-	const handleSaveImageInContext = ({ target }) => {
-		imagesDispatch({ type: imageTypes.SET_CURRENT_DATA, payload: { readImage: target?.result } });
+	const handleSaveImageInContext = ({ imageFile, target }) => {
+		imagesDispatch({
+			type: imageTypes.SET_CURRENT_DATA,
+			payload: { readImageFile: imageFile, readImage: target?.result },
+		});
+	};
+
+	const handleImageStatus = ({ status }) => {
+		imagesDispatch({ type: imageTypes.SET_IMAGE_STATUS, payload: status });
+	};
+
+	const handleSetPredictionData = ({ data }) => {
+		imagesDispatch({ type: imageTypes.SET_CURRENT_DATA, payload: { predictionData: data } });
 	};
 
 	return {
 		// status
-		readImage,
 		message,
+		readImage,
+		readImageFile,
 		predictedImage,
 		predictionData,
 		predictedHistory,
@@ -41,5 +54,7 @@ export const useImagesContext = () => {
 		// actions
 		handleSetMessages,
 		handleSaveImageInContext,
+		handleImageStatus,
+		handleSetPredictionData,
 	};
 };

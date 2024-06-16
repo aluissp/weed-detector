@@ -5,9 +5,9 @@ import { imagesReducer } from './imagesReducer';
 import { status } from '../../constants';
 
 const initialState = {
-	readImage: null,
 	message: null,
-	predictedImage: null,
+	readImage: null,
+	readImageFile: null,
 	predictionData: null,
 	predictedHistory: [],
 	status: status.IDLE,

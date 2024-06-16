@@ -11,6 +11,9 @@ export const imagesReducer = (imageState, action) => {
 		case imageTypes.SET_MESSAGE:
 			return { ...imageState, message: action.payload };
 
+		case imageTypes.SET_IMAGE_STATUS:
+			return { ...imageState, status: action.payload };
+
 		default:
 			return imageState;
 	}
