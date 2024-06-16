@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import { imageTypes } from '../types';
 import { useUiContext } from './useUiContext';
 import { useImagesContext } from './useImagesContext';
-import { useReadDropzoneImage } from './useReadDropzoneImage';
 import {
 	defaultPredictParameters,
 	inputNames,
@@ -15,8 +14,15 @@ import {
 
 export const useImagePredictForm = () => {
 	const { handleSetCurrentPage } = useUiContext();
-	const { readImage, readImageFile } = useReadDropzoneImage();
-	const { handleSetMessages, handleImageStatus, handleSetPredictionData } = useImagesContext();
+
+	const {
+		readImage,
+		readImageFile,
+		handleSetMessages,
+		handleImageStatus,
+		handleSetPredictionData,
+	} = useImagesContext();
+
 	const {
 		register,
 		handleSubmit,

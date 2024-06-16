@@ -19,12 +19,12 @@ export const PredictImage = () => {
 				{dropzoneStatus === constantDropzoneStatus.SHOW_DROPZONE ? (
 					<SquareDropzone onDrop={handleChangeFile} />
 				) : (
-					<div className='flex flex-col w-full'>
+					<>
 						<h2 className='w-full text-center text-lg font-bold mb-3'>Imagen cargada</h2>
 						<div className='flex items-center justify-center'>
-							<img src={readImage} alt='Imagen cargada' className='w-auto h-64' />
+							<img src={readImage} alt='Imagen cargada' className='w-auto h-64 rounded-lg' />
 						</div>
-					</div>
+					</>
 				)}
 
 				{/* Class to predict */}
