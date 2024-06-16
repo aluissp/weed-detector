@@ -67,7 +67,8 @@ class InferenceImages:
             filename = os.path.basename(result.path)
             inference_results[filename] = {
                 'message': result.verbose(),
-                'speed': result.speed
+                'speed': result.speed,
+                'summary': result.summary(),
             }
 
             json_path = os.path.join(self.runs_path, 'inference_results.json')
