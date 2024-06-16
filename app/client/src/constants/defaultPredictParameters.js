@@ -1,6 +1,6 @@
 import { inputNames } from './inputNames';
 
-export const defaultPredictParameters = {
+export const defaultPredictParameters = Object.freeze({
 	[inputNames.imgsz]: 640,
 	[inputNames.max_det]: 300,
 	[inputNames.line_width]: 3,
@@ -20,4 +20,4 @@ export const defaultPredictParameters = {
 	[inputNames.diente_leon]: true,
 	[inputNames.kikuyo]: true,
 	[inputNames.otro]: true,
-};
+});

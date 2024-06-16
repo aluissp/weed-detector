@@ -1,18 +1,10 @@
 import { useForm } from 'react-hook-form';
 import { TbPhotoSearch } from 'react-icons/tb';
 import { SquareDropzone } from '../components';
+import { defaultPredictParameters, inputNames } from '../constants';
 import { FormButton, FormInput, RangeInput, ToggleInput } from '../common/components';
-import { useReadDropzoneImage, useUiContext } from '../hooks';
-import {
-	defaultPredictParameters,
-	dropzoneStatus as constantDropzoneStatus,
-	inputNames,
-} from '../constants';
-import { PiBroomBold } from 'react-icons/pi';
 
-export const PredictImage = () => {
-	const { handleCleanDropzoneData } = useUiContext();
-	const { readImage, dropzoneStatus, handleChangeFile } = useReadDropzoneImage();
+export const ShowPrediction = () => {
 	const {
 		register,
 		handleSubmit,
@@ -22,27 +14,16 @@ export const PredictImage = () => {
 
 	const { [inputNames.imgsz]: errorImgz, [inputNames.max_det]: errorMaxDet } = errors;
 
-	const handlePredictImage = data => {
-		console.log('Predicting image with data:', data);
-		console.log('Is submitting:', isSubmitting);
-		console.log(readImage);
-	};
+	console.log('Submitting:', isSubmitting);
 
 	return (
 		<section className='grid md:grid-cols-2 gap-x-2 items-start md:justify-between w-full text-white animate-fade'>
 			{/* Left */}
+
+			<h1>Mostrar resultados</h1>
 			<div className='flex flex-col w-full'>
 				{/* Dropzone */}
-				{dropzoneStatus === constantDropzoneStatus.SHOW_DROPZONE ? (
-					<SquareDropzone onDrop={handleChangeFile} />
-				) : (
-					<div className='flex flex-col w-full'>
-						<h2 className='w-full text-center text-lg font-bold mb-3'>Imagen cargada</h2>
-						<div className='flex items-center justify-center'>
-							<img src={readImage} alt='Imagen cargada' className='w-auto h-64' />
-						</div>
-					</div>
-				)}
+				<SquareDropzone onDrop={console.log} />
 
 				{/* Class to predict */}
 				<div className='mt-4 grid sm:grid-cols-3 gap-4'>
@@ -69,8 +50,8 @@ export const PredictImage = () => {
 			<div className='flex flex-col w-full md:pl-4 pb-4'>
 				<h2 className='w-full text-center text-lg font-bold mb-3'>Ajuste de parámetros</h2>
 
-				<form onSubmit={handleSubmit(handlePredictImage)}>
-					<div className='grid grid-cols-2 gap-x-2 text-sm'>
+				<form onSubmit={handleSubmit(console.log)}>
+					<div className='grid grid-cols-2 gap-x-2'>
 						<h3 className='w-full text-left font-bold mb-3 col-span-2'>Parámetros de inferencia</h3>
 
 						<FormInput
@@ -188,19 +169,7 @@ export const PredictImage = () => {
 							className='col-span-2 sm:col-span-1'
 						/>
 
-						<FormButton
-							type='button'
-							className='col-span-2 sm:col-span-1'
-							onClick={handleCleanDropzoneData}
-						>
-							<PiBroomBold className='text-xl' />
-							Limpiar imagen
-						</FormButton>
-
-						<FormButton
-							type='submit'
-							className='col-span-2 sm:col-span-1 mt-2 sm:mt-0 mb-16 sm:mb-0' // check mb-16 sm:mb-0
-						>
+						<FormButton type='submit' className='col-span-2'>
 							<TbPhotoSearch className='text-xl' />
 							Detectar malezas
 						</FormButton>

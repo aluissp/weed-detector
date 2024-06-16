@@ -1,4 +1,4 @@
-export const inputNames = {
+export const inputNames = Object.freeze({
 	imgsz: 'imgsz',
 	max_det: 'max_det',
 	line_width: 'line_width',
@@ -18,4 +18,4 @@ export const inputNames = {
 	diente_leon: 'diente_leon',
 	kikuyo: 'kikuyo',
 	otro: 'otro',
-};
+});

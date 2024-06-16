@@ -2,13 +2,17 @@
 import { useReducer } from 'react';
 import { uiReducer } from './uiReducer';
 import { UiContext } from '../contextBuilder';
+import { pageNames, dropzoneStatus } from '@/constants';
 
-const initialState = { currentPage: 1 };
+const initialState = {
+	currentPage: pageNames.predictPage,
+	dropzoneStatus: dropzoneStatus.SHOW_DROPZONE,
+};
 
 const init = () => {
-	const currentPage = localStorage.getItem('currentPage') || 1;
+	const currentPage = localStorage.getItem('currentPage') || initialState.currentPage;
 
-	return { currentPage };
+	return { ...initialState, currentPage };
 };
 
 export const UiProvider = ({ children }) => {
