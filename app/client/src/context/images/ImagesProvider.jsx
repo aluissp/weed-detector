@@ -1,8 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
+import { useIndexedDB } from 'react-indexed-db-hook';
+import { imageTypes } from '../../types';
 import { ImagesContext } from '../contextBuilder';
 import { imagesReducer } from './imagesReducer';
-import { status } from '../../constants';
+import { dbStoreName, status } from '../../constants';
 
 const initialState = {
 	message: null,
@@ -14,14 +17,19 @@ const initialState = {
 	errorMessage: null,
 };
 
-// const init = () => {
-// 	const currentPage = localStorage.getItem('currentPage') || initialState.currentPage;
-
-// 	return { ...initialState, currentPage };
-// };
-
 export const ImagesProvider = ({ children }) => {
+	const { getAll } = useIndexedDB(dbStoreName);
 	const [images, imagesDispatch] = useReducer(imagesReducer, initialState);
+
+	useEffect(() => {
+		if (images.status !== status.COMPLETED && images.status !== status.IDLE) return;
+
+		getAll().then(history => {
+			history.sort((a, b) => b.id - a.id);
+
+			imagesDispatch({ type: imageTypes.LOAD_HISTORY, payload: history });
+		});
+	}, [images.status]);
 
 	return (
 		<ImagesContext.Provider value={{ ...images, imagesDispatch }}>

@@ -8,6 +8,7 @@ import { useUiContext } from './useUiContext';
 import { useImagesContext } from './useImagesContext';
 import { unzipImageResponse } from '../utils';
 import {
+	dbStoreName,
 	defaultPredictParameters,
 	inputNames,
 	modelClassKeys,
@@ -17,7 +18,7 @@ import {
 
 export const useImagePredictForm = () => {
 	const { handleSetCurrentPage } = useUiContext();
-	const { add } = useIndexedDB('predictionFiles');
+	const { add } = useIndexedDB(dbStoreName);
 
 	const {
 		readImage,

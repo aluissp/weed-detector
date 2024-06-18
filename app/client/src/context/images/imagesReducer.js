@@ -14,6 +14,9 @@ export const imagesReducer = (imageState, action) => {
 		case imageTypes.SET_IMAGE_STATUS:
 			return { ...imageState, status: action.payload };
 
+		case imageTypes.LOAD_HISTORY:
+			return { ...imageState, predictedHistory: action.payload };
+
 		default:
 			return imageState;
 	}
