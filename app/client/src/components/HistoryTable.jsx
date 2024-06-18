@@ -12,7 +12,7 @@ import { FormButton } from '../common/components';
 import { dbStoreName, pageNames } from '../constants';
 import { useImagesContext } from '../hooks/useImagesContext';
 import { useUiContext } from '../hooks/useUiContext';
-import { unzipImageResponse } from '../utils';
+import { downloadFile, unzipImageResponse } from '../utils';
 
 const columns = [
 	{ header: 'id', accessorKey: 'id' },
@@ -45,6 +45,11 @@ export const HistoryTable = ({ predictedHistory }) => {
 		const data = await unzipImageResponse(file);
 		handleSetPredictionData({ data });
 		handleSetCurrentPage({ pageName: pageNames.resultsPage });
+	};
+
+	const handleDownloadFile = async id => {
+		const { file, name } = await getByID(id);
+		await downloadFile(file, `inference_${name}`, 'zip');
 	};
 	return (
 		<>
@@ -111,7 +116,10 @@ export const HistoryTable = ({ predictedHistory }) => {
 									</FormButton>
 								</td>
 								<td className='px-6 py-2'>
-									<FormButton className='sm:px-2 h-6 rounded-md hover:bg-sky-800'>
+									<FormButton
+										className='sm:px-2 h-6 rounded-md hover:bg-sky-800'
+										onClick={() => handleDownloadFile(row.getValue('id'))}
+									>
 										Descargar
 									</FormButton>
 								</td>
