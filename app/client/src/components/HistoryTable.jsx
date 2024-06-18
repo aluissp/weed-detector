@@ -143,8 +143,8 @@ export const HistoryTable = ({ predictedHistory }) => {
 				<p>-</p>
 				<FormButton
 					className='sm:px-4 h-6 rounded-md disabled:cursor-not-allowed truncate'
-					onClick={() => table.lastPage()}
-					disabled={!table.getCanNextPage()}
+					onClick={() => table.firstPage()}
+					disabled={!table.getCanPreviousPage()}
 				>
 					Primera página
 				</FormButton>
