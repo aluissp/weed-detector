@@ -97,7 +97,8 @@ export const useImagePredictForm = () => {
 			.then(unzipImageResponse)
 			.then(async file => {
 				const dataToSerialize = {
-					name: file.jsonData.fileName,
+					name: file.jsonData.name,
+					fileName: file.jsonData.fileName,
 					date: format(new Date(), 'dd/MM/yyyy HH:mm:ss'),
 					file: file.file,
 				};
@@ -115,8 +116,7 @@ export const useImagePredictForm = () => {
 				handleSetCurrentPage({ pageName: pageNames.resultsPage });
 				return 'Detección de malezas exitosa!';
 			},
-			error: e => {
-				console.log(e);
+			error: () => {
 				handleImageStatus({ status: status.FAILED });
 				return 'Error al detectar malezas';
 			},

@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react';
+import { useIndexedDB } from 'react-indexed-db-hook';
 import {
 	getCoreRowModel,
 	getFilteredRowModel,
@@ -8,16 +9,24 @@ import {
 	useReactTable,
 } from '@tanstack/react-table';
 import { FormButton } from '../common/components';
+import { dbStoreName, pageNames } from '../constants';
+import { useImagesContext } from '../hooks/useImagesContext';
+import { useUiContext } from '../hooks/useUiContext';
+import { unzipImageResponse } from '../utils';
 
 const columns = [
 	{ header: 'id', accessorKey: 'id' },
-	{ header: 'Nombre', accessorKey: 'name' },
+	{ header: 'Nombre', accessorKey: 'fileName' },
 	{ header: 'Fecha', accessorKey: 'date' },
 ];
 
 export const HistoryTable = ({ predictedHistory }) => {
 	const [sorting, setSorting] = useState([]);
 	const [filtering, setFiltering] = useState('');
+
+	const { getByID } = useIndexedDB(dbStoreName);
+	const { handleSetCurrentPage } = useUiContext();
+	const { handleSetPredictionData } = useImagesContext();
 
 	const table = useReactTable({
 		columns,
@@ -30,6 +39,13 @@ export const HistoryTable = ({ predictedHistory }) => {
 		onSortingChange: setSorting,
 		onGlobalFilterChange: setFiltering,
 	});
+
+	const showPrediction = async id => {
+		const { file } = await getByID(id);
+		const data = await unzipImageResponse(file);
+		handleSetPredictionData({ data });
+		handleSetCurrentPage({ pageName: pageNames.resultsPage });
+	};
 	return (
 		<>
 			<div className='flex justify-between items-center flex-col min-[461px]:flex-row gap-4 mb-4'>
@@ -58,12 +74,12 @@ export const HistoryTable = ({ predictedHistory }) => {
 								{{ asc: ' ↑', desc: ' ↓' }[table.getColumn('id').getIsSorted() ?? null]}
 							</th>
 							<th
-								onClick={table.getColumn('name').getToggleSortingHandler()}
+								onClick={table.getColumn('fileName').getToggleSortingHandler()}
 								scope='col'
 								className='px-6 py-3 min-w-28'
 							>
-								{table.getColumn('name').columnDef.header}
-								{{ asc: ' ↑', desc: ' ↓' }[table.getColumn('name').getIsSorted() ?? null]}
+								{table.getColumn('fileName').columnDef.header}
+								{{ asc: ' ↑', desc: ' ↓' }[table.getColumn('fileName').getIsSorted() ?? null]}
 							</th>
 							<th
 								onClick={table.getColumn('date').getToggleSortingHandler()}
@@ -84,10 +100,15 @@ export const HistoryTable = ({ predictedHistory }) => {
 								<th scope='row' className='px-6 py-2 font-medium whitespace-nowrap text-white w-16'>
 									{row.getValue('id')}
 								</th>
-								<td className='px-6 py-2'>{row.getValue('name')}</td>
+								<td className='px-6 py-2'>{row.getValue('fileName')}</td>
 								<td className='px-6 py-2'>{row.getValue('date')}</td>
 								<td className='px-6 py-2'>
-									<FormButton className='sm:px-2 h-6 rounded-md'>Ver</FormButton>
+									<FormButton
+										className='sm:px-2 h-6 rounded-md'
+										onClick={() => showPrediction(row.getValue('id'))}
+									>
+										Ver
+									</FormButton>
 								</td>
 								<td className='px-6 py-2'>
 									<FormButton className='sm:px-2 h-6 rounded-md hover:bg-sky-800'>

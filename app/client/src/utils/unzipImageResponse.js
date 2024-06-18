@@ -15,9 +15,9 @@ export const unzipImageResponse = async file => {
 
 	const tableData = getTableSummary(Object.values(jsonData)[0]?.summary);
 
-	fileName = fileName.replace('.jpeg', '').replace('.jpg', '').replace('.png', '');
+	const name = fileName.replace('.jpeg', '').replace('.jpg', '').replace('.png', '');
 
-	jsonData = { fileName, tableData, ...Object.values(jsonData)[0] };
+	jsonData = { name, fileName, tableData, ...Object.values(jsonData)[0] };
 
 	return { file, image, jsonData };
 };

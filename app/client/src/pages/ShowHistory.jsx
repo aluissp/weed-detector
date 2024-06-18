@@ -11,7 +11,6 @@ export const ShowHistory = () => {
 			</div>
 		);
 
-	console.log(predictedHistory);
 	return (
 		<section className='flex flex-col w-full text-white animate-fade'>
 			<h2 className='w-full text-center text-lg font-bold mb-3'>Historial de predicciones</h2>

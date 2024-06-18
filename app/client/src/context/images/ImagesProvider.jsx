@@ -27,6 +27,8 @@ export const ImagesProvider = ({ children }) => {
 		getAll().then(history => {
 			history.sort((a, b) => b.id - a.id);
 
+			history.forEach(item => delete item.file);
+
 			imagesDispatch({ type: imageTypes.LOAD_HISTORY, payload: history });
 		});
 	}, [images.status]);
