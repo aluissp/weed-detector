@@ -41,6 +41,7 @@ export const useReadDropzoneImage = () => {
 			handleSetMessages({
 				type: imageTypes.SET_MESSAGE,
 				message: `El archivo ${fileName} se ha cargado correctamente!`,
+				cleanMessage: true,
 			});
 
 			// Hide dropzone

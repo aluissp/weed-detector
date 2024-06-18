@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { imageTypes } from '../types';
 import { useUiContext } from './useUiContext';
 import { useImagesContext } from './useImagesContext';
+import { unzipImageResponse } from '../utils';
 import {
 	defaultPredictParameters,
 	inputNames,
@@ -18,6 +19,7 @@ export const useImagePredictForm = () => {
 	const {
 		readImage,
 		readImageFile,
+		status: imageStatus,
 		handleSetMessages,
 		handleImageStatus,
 		handleSetPredictionData,
@@ -39,9 +41,6 @@ export const useImagePredictForm = () => {
 				message: 'No se ha cargado ninguna imagen',
 				cleanMessage: true,
 			});
-
-		// Set loading status
-		handleImageStatus({ status: status.LOADING });
 
 		let classes = '';
 
@@ -66,6 +65,16 @@ export const useImagePredictForm = () => {
 			delete data[inputNames.papa];
 		}
 
+		if (classes === '')
+			return handleSetMessages({
+				type: imageTypes.SET_ERROR_MESSAGE,
+				message: 'Por favor, seleccione al menos una clase',
+				cleanMessage: true,
+			});
+
+		// Set loading status
+		handleImageStatus({ status: status.LOADING });
+
 		data.classes = classes;
 
 		// Generate query params
@@ -78,21 +87,21 @@ export const useImagePredictForm = () => {
 
 		const config = { headers: { 'Content-Type': 'multipart/form-data' }, responseType: 'blob' };
 
-		const request = axios.post('api/predict?' + queryParams, formData, config);
+		const request = axios
+			.post('api/predict?' + queryParams, formData, config)
+			.then(response => response.data)
+			.then(unzipImageResponse);
 
 		toast.promise(request, {
 			loading: 'Detectando malezas...',
-			success: async ({ data: file }) => {
-				// const zip = await JSZip.loadAsync(file);
-				// const jsonfile = await zip.file('inference_results.json').async('string');
-				// console.log(jsonfile);
-
+			success: file => {
 				handleSetPredictionData({ data: file });
 				handleImageStatus({ status: status.COMPLETED });
 				handleSetCurrentPage({ pageName: pageNames.resultsPage });
 				return 'Detección de malezas exitosa!';
 			},
-			error: () => {
+			error: e => {
+				console.log(e);
 				handleImageStatus({ status: status.FAILED });
 				return 'Error al detectar malezas';
 			},
@@ -104,6 +113,7 @@ export const useImagePredictForm = () => {
 		control,
 		errorImgz,
 		errorMaxDet,
+		imageStatus,
 
 		// actions
 		register,

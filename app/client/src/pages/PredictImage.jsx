@@ -3,13 +3,26 @@ import { TbPhotoSearch } from 'react-icons/tb';
 import { SquareDropzone } from '../components';
 import { FormButton, FormInput, RangeInput, ToggleInput } from '../common/components';
 import { useImagePredictForm, useReadDropzoneImage, useUiContext } from '../hooks';
-import { inputNames, dropzoneStatus as constantDropzoneStatus } from '../constants';
+import {
+	status,
+	inputNames,
+	modelClassNames,
+	modelClassKeys,
+	dropzoneStatus as constantDropzoneStatus,
+} from '../constants';
 
 export const PredictImage = () => {
 	const { handleCleanDropzoneData } = useUiContext();
 	const { readImage, dropzoneStatus, handleChangeFile } = useReadDropzoneImage();
-	const { control, errorImgz, errorMaxDet, handlePredictImage, handleSubmit, register } =
-		useImagePredictForm();
+	const {
+		control,
+		errorImgz,
+		errorMaxDet,
+		imageStatus,
+		handlePredictImage,
+		handleSubmit,
+		register,
+	} = useImagePredictForm();
 
 	return (
 		<section className='grid md:grid-cols-2 gap-x-2 items-start md:justify-between w-full text-white animate-fade'>
@@ -33,19 +46,31 @@ export const PredictImage = () => {
 						Elija las clases a predecir
 					</h2>
 
-					<ToggleInput id={inputNames.papa} labelText='Papa' {...register(inputNames.papa)} />
+					<ToggleInput
+						id={inputNames.papa}
+						labelText={modelClassNames[modelClassKeys.papa]}
+						{...register(inputNames.papa)}
+					/>
 					<ToggleInput
 						id={inputNames.lengua_vaca}
-						labelText='Lengua de vaca'
+						labelText={modelClassNames[modelClassKeys.lengua_vaca]}
 						{...register(inputNames.lengua_vaca)}
 					/>
 					<ToggleInput
 						id={inputNames.diente_leon}
-						labelText='Diente de león'
+						labelText={modelClassNames[modelClassKeys.diente_leon]}
 						{...register(inputNames.diente_leon)}
 					/>
-					<ToggleInput id={inputNames.kikuyo} labelText='Kikuyo' {...register(inputNames.kikuyo)} />
-					<ToggleInput id={inputNames.otro} labelText='Otros' {...register(inputNames.otro)} />
+					<ToggleInput
+						id={inputNames.kikuyo}
+						labelText={modelClassNames[modelClassKeys.kikuyo]}
+						{...register(inputNames.kikuyo)}
+					/>
+					<ToggleInput
+						id={inputNames.otro}
+						labelText={modelClassNames[modelClassKeys.otro]}
+						{...register(inputNames.otro)}
+					/>
 				</div>
 			</div>
 			{/* Parameters */}
@@ -175,6 +200,7 @@ export const PredictImage = () => {
 							type='button'
 							className='col-span-2 sm:col-span-1'
 							onClick={handleCleanDropzoneData}
+							disabled={imageStatus === status.LOADING}
 						>
 							<PiBroomBold className='text-xl' />
 							Limpiar imagen
@@ -182,6 +208,7 @@ export const PredictImage = () => {
 
 						<FormButton
 							type='submit'
+							disabled={imageStatus === status.LOADING}
 							className='col-span-2 sm:col-span-1 mt-2 sm:mt-0 mb-16 sm:mb-0' // check mb-16 sm:mb-0
 						>
 							<TbPhotoSearch className='text-xl' />
