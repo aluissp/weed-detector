@@ -17,10 +17,7 @@ export const ShowPrediction = () => {
 
 	const numberDetections = predictionData?.jsonData?.summary?.length;
 
-	const fileName = predictionData?.jsonData?.fileName
-		?.replace('.jpeg', '')
-		?.replace('.jpg', '')
-		?.replace('.png', '');
+	const fileName = predictionData?.jsonData?.fileName;
 
 	return (
 		<section className='grid md:grid-cols-2 gap-x-6 items-start md:justify-between w-full text-white animate-fade'>

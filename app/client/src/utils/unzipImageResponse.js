@@ -7,13 +7,15 @@ export const unzipImageResponse = async file => {
 
 	jsonData = JSON.parse(jsonData);
 
-	const fileName = Object.keys(jsonData)[0];
+	let fileName = Object.keys(jsonData)[0];
 
 	let image = await zip.file(`predict/${fileName}`).async('blob');
 
 	image = await readImage(image);
 
 	const tableData = getTableSummary(Object.values(jsonData)[0]?.summary);
+
+	fileName = fileName.replace('.jpeg', '').replace('.jpg', '').replace('.png', '');
 
 	jsonData = { fileName, tableData, ...Object.values(jsonData)[0] };
 
