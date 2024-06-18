@@ -1,8 +1,11 @@
+import { initDB } from 'react-indexed-db-hook';
 import { useUiContext } from './hooks';
-import { pageNames } from './constants';
+import { dbConfig, pageNames } from './constants';
 import { Notifications } from './common/components';
 import { DottedBackground, Header, NavBar } from './components';
 import { PredictImage, ShowHistory, ShowPrediction } from './pages';
+
+initDB(dbConfig);
 
 export const App = () => {
 	const { currentPage } = useUiContext();

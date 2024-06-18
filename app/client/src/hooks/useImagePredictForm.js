@@ -1,6 +1,8 @@
 import axios from 'axios';
 import { toast } from 'sonner';
+import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
+import { useIndexedDB } from 'react-indexed-db-hook';
 import { imageTypes } from '../types';
 import { useUiContext } from './useUiContext';
 import { useImagesContext } from './useImagesContext';
@@ -15,6 +17,7 @@ import {
 
 export const useImagePredictForm = () => {
 	const { handleSetCurrentPage } = useUiContext();
+	const { add } = useIndexedDB('predictionFiles');
 
 	const {
 		readImage,
@@ -90,7 +93,18 @@ export const useImagePredictForm = () => {
 		const request = axios
 			.post('api/predict?' + queryParams, formData, config)
 			.then(response => response.data)
-			.then(unzipImageResponse);
+			.then(unzipImageResponse)
+			.then(async file => {
+				const dataToSerialize = {
+					name: file.jsonData.fileName,
+					date: format(new Date(), 'dd/MM/yyyy HH:mm:ss'),
+					file: file.file,
+				};
+
+				await add(dataToSerialize);
+
+				return file;
+			});
 
 		toast.promise(request, {
 			loading: 'Detectando malezas...',
