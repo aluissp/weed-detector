@@ -18,7 +18,7 @@ import {
 
 export const useImagePredictForm = () => {
 	const { handleSetCurrentPage } = useUiContext();
-	const { add } = useIndexedDB(dbStoreName);
+	const { add, getAll, deleteRecord } = useIndexedDB(dbStoreName);
 
 	const {
 		readImage,
@@ -96,6 +96,13 @@ export const useImagePredictForm = () => {
 			.then(response => response.data)
 			.then(unzipImageResponse)
 			.then(async file => {
+				const predictions = await getAll();
+
+				if (predictions.length > 99) {
+					const [first] = predictions;
+					await deleteRecord(first.id);
+				}
+
 				const dataToSerialize = {
 					name: file.jsonData.name,
 					fileName: file.jsonData.fileName,
