@@ -29,6 +29,10 @@ export const useUiContext = () => {
 		});
 	};
 
+	const handleDropzoneVisibility = ({ status }) => {
+		uiDispatch({ type: uiTypes.SET_DROPZONE_STATUS, payload: status });
+	};
+
 	return {
 		// state
 		currentPage,
@@ -37,5 +41,6 @@ export const useUiContext = () => {
 		// actions
 		handleSetCurrentPage,
 		handleCleanDropzoneData,
+		handleDropzoneVisibility,
 	};
 };

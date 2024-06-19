@@ -1,13 +1,12 @@
-import { useContext } from 'react';
-import { UiContext } from '../context';
-import { imageTypes, uiTypes } from '../types';
+import { imageTypes } from '../types';
+import { useUiContext } from './useUiContext';
 import { useImagesContext } from './useImagesContext';
 import { dropzoneStatus as constantDropzoneStatus } from '../constants';
 
 const fileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
 export const useReadDropzoneImage = () => {
-	const { dropzoneStatus, uiDispatch } = useContext(UiContext);
+	const { dropzoneStatus, handleDropzoneVisibility } = useUiContext();
 	const { readImage, readImageFile, handleSaveImageInContext, handleSetMessages } =
 		useImagesContext();
 
@@ -45,7 +44,7 @@ export const useReadDropzoneImage = () => {
 			});
 
 			// Hide dropzone
-			uiDispatch({ type: uiTypes.SET_DROPZONE_STATUS, payload: constantDropzoneStatus.SHOW_IMAGE });
+			handleDropzoneVisibility({ status: constantDropzoneStatus.SHOW_IMAGE });
 		};
 	};
 
