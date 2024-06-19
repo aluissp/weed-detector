@@ -8,6 +8,7 @@ export const useUiContext = () => {
 	const { imagesDispatch } = useContext(ImagesContext);
 
 	const handleSetCurrentPage = ({ pageName }) => {
+		localStorage.setItem('currentPage', pageName);
 		uiDispatch({ type: uiTypes.SET_CURRENT_PAGE, payload: pageName });
 	};
 
