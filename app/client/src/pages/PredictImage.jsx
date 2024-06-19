@@ -33,7 +33,7 @@ export const PredictImage = () => {
 					<SquareDropzone onDrop={handleChangeFile} />
 				) : (
 					<>
-						<h2 className='w-full text-center text-lg font-bold mb-3'>Imagen cargada</h2>
+						<h2 className='w-full text-center text-lg font-bold mb-2'>Imagen cargada</h2>
 						<div className='flex items-center justify-center'>
 							<img src={readImage} alt='Imagen cargada' className='w-auto h-64 rounded-lg' />
 						</div>
@@ -42,7 +42,7 @@ export const PredictImage = () => {
 
 				{/* Class to predict */}
 				<div className='my-4 grid sm:grid-cols-3 gap-4'>
-					<h2 className='w-full text-center font-bold mb-3 sm:col-span-3'>
+					<h2 className='w-full text-center font-bold sm:col-span-3'>
 						Elija las clases a predecir
 					</h2>
 

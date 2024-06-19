@@ -1,98 +1,17 @@
 /* eslint-disable react/prop-types */
-import { useState } from 'react';
-import { useIndexedDB } from 'react-indexed-db-hook';
-import {
-	getCoreRowModel,
-	getFilteredRowModel,
-	getPaginationRowModel,
-	getSortedRowModel,
-	useReactTable,
-} from '@tanstack/react-table';
+import { useHistoryTable } from '../hooks';
 import { FormButton } from '../common/components';
-import { dbStoreName, pageNames, status } from '../constants';
-import { useImagesContext } from '../hooks/useImagesContext';
-import { useUiContext } from '../hooks/useUiContext';
-import { downloadFile, unzipImageResponse } from '../utils';
-import { imageTypes } from '../types';
-
-const columns = [
-	{ header: 'id', accessorKey: 'id' },
-	{ header: 'Nombre', accessorKey: 'fileName' },
-	{ header: 'Fecha', accessorKey: 'date' },
-];
 
 export const HistoryTable = ({ predictedHistory }) => {
-	const [sorting, setSorting] = useState([]);
-	const [filtering, setFiltering] = useState('');
-
-	const { getByID, deleteRecord, clear } = useIndexedDB(dbStoreName);
-	const { handleSetCurrentPage } = useUiContext();
-	const { handleSetPredictionData, handleImageStatus, handleSetMessages } = useImagesContext();
-
-	const table = useReactTable({
-		columns,
-		data: predictedHistory,
-		getCoreRowModel: getCoreRowModel(),
-		getSortedRowModel: getSortedRowModel(),
-		getFilteredRowModel: getFilteredRowModel(),
-		getPaginationRowModel: getPaginationRowModel(),
-		state: { sorting, globalFilter: filtering },
-		onSortingChange: setSorting,
-		onGlobalFilterChange: setFiltering,
-	});
-
-	const showPrediction = async id => {
-		const { file } = await getByID(id);
-		const data = await unzipImageResponse(file);
-		handleSetPredictionData({ data });
-		handleSetCurrentPage({ pageName: pageNames.resultsPage });
-	};
-
-	const handleDownloadFile = async id => {
-		const { file, name } = await getByID(id);
-		await downloadFile(file, `inference_${name}`, 'zip');
-	};
-
-	const handleClearAllHistory = async () => {
-		try {
-			handleImageStatus({ status: status.LOADING });
-			await clear();
-			handleSetMessages({
-				type: imageTypes.SET_MESSAGE,
-				message: 'Historial limpiado con éxito',
-				cleanMessage: true,
-			});
-			handleImageStatus({ status: status.COMPLETED });
-		} catch (error) {
-			handleSetMessages({
-				type: imageTypes.SET_ERROR_MESSAGE,
-				message: 'Error al limpiar el historial',
-				cleanMessage: true,
-			});
-			handleImageStatus({ status: status.FAILED });
-		}
-	};
-
-	const handleDeleteHistory = async id => {
-		try {
-			handleImageStatus({ status: status.LOADING });
-			await deleteRecord(id);
-			handleSetMessages({
-				type: imageTypes.SET_MESSAGE,
-				message: 'Registro eliminado con éxito',
-				cleanMessage: true,
-			});
-			handleImageStatus({ status: status.COMPLETED });
-		} catch (error) {
-			handleSetMessages({
-				type: imageTypes.SET_ERROR_MESSAGE,
-				message: 'Error al eliminar el registro',
-				cleanMessage: true,
-			});
-			handleImageStatus({ status: status.FAILED });
-		}
-	};
-
+	const {
+		table,
+		filtering,
+		setFiltering,
+		handleClearAllHistory,
+		handleDeleteHistory,
+		handleDownloadFile,
+		showPrediction,
+	} = useHistoryTable({ predictedHistory });
 	return (
 		<>
 			<div className='flex justify-between items-center flex-col min-[461px]:flex-row gap-4 mb-4'>
@@ -122,7 +41,9 @@ export const HistoryTable = ({ predictedHistory }) => {
 								className='px-6 py-3 min-w-[75px]'
 							>
 								{table.getColumn('id').columnDef.header}
-								{{ asc: ' ↑', desc: ' ↓' }[table.getColumn('id').getIsSorted() ?? null]}
+								{/* { asc: ' ↑', desc: ' ↓' } this is correct however in this particular
+								case I'll change the icons*/}
+								{{ asc: ' ↓', desc: ' ↑' }[table.getColumn('id').getIsSorted() ?? null]}
 							</th>
 							<th
 								onClick={table.getColumn('fileName').getToggleSortingHandler()}
@@ -130,7 +51,7 @@ export const HistoryTable = ({ predictedHistory }) => {
 								className='px-6 py-3 min-w-28'
 							>
 								{table.getColumn('fileName').columnDef.header}
-								{{ asc: ' ↑', desc: ' ↓' }[table.getColumn('fileName').getIsSorted() ?? null]}
+								{{ asc: ' ↓', desc: ' ↑' }[table.getColumn('fileName').getIsSorted() ?? null]}
 							</th>
 							<th
 								onClick={table.getColumn('date').getToggleSortingHandler()}
@@ -138,7 +59,7 @@ export const HistoryTable = ({ predictedHistory }) => {
 								className='px-6 py-3 min-w-28'
 							>
 								{table.getColumn('date').columnDef.header}
-								{{ asc: ' ↑', desc: ' ↓' }[table.getColumn('date').getIsSorted() ?? null]}
+								{{ asc: ' ↓', desc: ' ↑' }[table.getColumn('date').getIsSorted() ?? null]}
 							</th>
 							<th scope='col' className='px-6 py-3' colSpan='3'>
 								Acciones

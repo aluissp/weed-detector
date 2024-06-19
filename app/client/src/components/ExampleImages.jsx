@@ -25,7 +25,7 @@ export const ExampleImages = () => {
 	};
 
 	return (
-		<div className='mb-4 grid grid-cols-3 gap-4'>
+		<div className='mb-4 md:mb-0 grid grid-cols-3 gap-x-4 gap-y-2'>
 			<h2 className='w-full text-center font-bold col-span-3'>Imágenes de prueba</h2>
 
 			{exampleImagePaths.map((path, index) => (
