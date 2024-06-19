@@ -39,7 +39,7 @@ export const useImagePredictForm = () => {
 	const { [inputNames.imgsz]: errorImgz, [inputNames.max_det]: errorMaxDet } = errors;
 
 	const handlePredictImage = data => {
-		if (!readImage)
+		if (!readImage || !readImageFile)
 			return handleSetMessages({
 				type: imageTypes.SET_ERROR_MESSAGE,
 				message: 'No se ha cargado ninguna imagen',

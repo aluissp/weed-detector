@@ -5,4 +5,5 @@ export * from './inputNames';
 export * from './dropzoneStatus';
 export * from './modelClassKeys';
 export * from './modelClassNames';
+export * from './exampleImagePaths';
 export * from './defaultPredictParameters';

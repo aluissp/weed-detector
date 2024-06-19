@@ -1,6 +1,6 @@
 import { PiBroomBold } from 'react-icons/pi';
 import { TbPhotoSearch } from 'react-icons/tb';
-import { SquareDropzone } from '../components';
+import { ExampleImages, SquareDropzone } from '../components';
 import { FormButton, FormInput, RangeInput, ToggleInput } from '../common/components';
 import { useImagePredictForm, useReadDropzoneImage, useUiContext } from '../hooks';
 import {
@@ -41,7 +41,7 @@ export const PredictImage = () => {
 				)}
 
 				{/* Class to predict */}
-				<div className='mt-4 grid sm:grid-cols-3 gap-4'>
+				<div className='my-4 grid sm:grid-cols-3 gap-4'>
 					<h2 className='w-full text-center font-bold mb-3 sm:col-span-3'>
 						Elija las clases a predecir
 					</h2>
@@ -72,6 +72,9 @@ export const PredictImage = () => {
 						{...register(inputNames.otro)}
 					/>
 				</div>
+
+				{/* Examples */}
+				<ExampleImages />
 			</div>
 			{/* Parameters */}
 			<div className='flex flex-col w-full md:pl-4 pb-4'>

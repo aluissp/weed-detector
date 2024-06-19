@@ -99,6 +99,7 @@ export const HistoryTable = ({ predictedHistory }) => {
 				<input
 					className='bg-white rounded-lg p-[6px] outline-none placeholder:text-dark text-sm w-full text-dark min-[461px]:w-auto'
 					type='text'
+					name='filtering'
 					value={filtering}
 					onChange={({ target }) => setFiltering(target.value)}
 					placeholder='Buscar un registro...'
