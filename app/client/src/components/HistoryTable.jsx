@@ -9,10 +9,11 @@ import {
 	useReactTable,
 } from '@tanstack/react-table';
 import { FormButton } from '../common/components';
-import { dbStoreName, pageNames } from '../constants';
+import { dbStoreName, pageNames, status } from '../constants';
 import { useImagesContext } from '../hooks/useImagesContext';
 import { useUiContext } from '../hooks/useUiContext';
 import { downloadFile, unzipImageResponse } from '../utils';
+import { imageTypes } from '../types';
 
 const columns = [
 	{ header: 'id', accessorKey: 'id' },
@@ -24,9 +25,9 @@ export const HistoryTable = ({ predictedHistory }) => {
 	const [sorting, setSorting] = useState([]);
 	const [filtering, setFiltering] = useState('');
 
-	const { getByID } = useIndexedDB(dbStoreName);
+	const { getByID, deleteRecord, clear } = useIndexedDB(dbStoreName);
 	const { handleSetCurrentPage } = useUiContext();
-	const { handleSetPredictionData } = useImagesContext();
+	const { handleSetPredictionData, handleImageStatus, handleSetMessages } = useImagesContext();
 
 	const table = useReactTable({
 		columns,
@@ -51,6 +52,47 @@ export const HistoryTable = ({ predictedHistory }) => {
 		const { file, name } = await getByID(id);
 		await downloadFile(file, `inference_${name}`, 'zip');
 	};
+
+	const handleClearAllHistory = async () => {
+		try {
+			handleImageStatus({ status: status.LOADING });
+			await clear();
+			handleSetMessages({
+				type: imageTypes.SET_MESSAGE,
+				message: 'Historial limpiado con éxito',
+				cleanMessage: true,
+			});
+			handleImageStatus({ status: status.COMPLETED });
+		} catch (error) {
+			handleSetMessages({
+				type: imageTypes.SET_ERROR_MESSAGE,
+				message: 'Error al limpiar el historial',
+				cleanMessage: true,
+			});
+			handleImageStatus({ status: status.FAILED });
+		}
+	};
+
+	const handleDeleteHistory = async id => {
+		try {
+			handleImageStatus({ status: status.LOADING });
+			await deleteRecord(id);
+			handleSetMessages({
+				type: imageTypes.SET_MESSAGE,
+				message: 'Registro eliminado con éxito',
+				cleanMessage: true,
+			});
+			handleImageStatus({ status: status.COMPLETED });
+		} catch (error) {
+			handleSetMessages({
+				type: imageTypes.SET_ERROR_MESSAGE,
+				message: 'Error al eliminar el registro',
+				cleanMessage: true,
+			});
+			handleImageStatus({ status: status.FAILED });
+		}
+	};
+
 	return (
 		<>
 			<div className='flex justify-between items-center flex-col min-[461px]:flex-row gap-4 mb-4'>
@@ -62,7 +104,10 @@ export const HistoryTable = ({ predictedHistory }) => {
 					placeholder='Buscar un registro...'
 				/>
 
-				<FormButton className='sm:px-4 min-[461px]:w-auto w-full hover:bg-red-700'>
+				<FormButton
+					className='sm:px-4 min-[461px]:w-auto w-full hover:bg-red-700'
+					onClick={() => handleClearAllHistory()}
+				>
 					Limpiar todo el historial
 				</FormButton>
 			</div>
@@ -124,7 +169,10 @@ export const HistoryTable = ({ predictedHistory }) => {
 									</FormButton>
 								</td>
 								<td className='px-6 py-2'>
-									<FormButton className='sm:px-2 h-6 rounded-md hover:bg-red-700'>
+									<FormButton
+										className='sm:px-2 h-6 rounded-md hover:bg-red-700'
+										onClick={() => handleDeleteHistory(row.getValue('id'))}
+									>
 										Eliminar
 									</FormButton>
 								</td>
