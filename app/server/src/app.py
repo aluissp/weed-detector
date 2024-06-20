@@ -1,18 +1,18 @@
 import os
-from flask import Flask, request, send_file
+from flask import Flask, request, send_file, render_template
 from .inference import InferenceImages
 from .utils import (delete_files, save_image, get_folderpath,
                     get_runs_path, compress_directory, get_img_predict_params)
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', template_folder='static')
 app.config['imgs'] = get_folderpath(__file__, 'imgs')
 app.config['models'] = get_folderpath(__file__, 'weights')
 
 
 @app.get("/")
 def show_homepage():
-    return 'Hello world!'
+    return render_template('index.html')
 
 
 @app.post("/predict")
