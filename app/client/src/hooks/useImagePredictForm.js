@@ -92,7 +92,7 @@ export const useImagePredictForm = () => {
 		const config = { headers: { 'Content-Type': 'multipart/form-data' }, responseType: 'blob' };
 
 		const request = axios
-			.post('api/predict?' + queryParams, formData, config)
+			.post('predict?' + queryParams, formData, config)
 			.then(response => response.data)
 			.then(unzipImageResponse)
 			.then(async file => {
