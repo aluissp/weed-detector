@@ -7,6 +7,10 @@ name = "pipy"
 flask = "*"
 python-dotenv = "*"
 gunicorn = "*"
+imutils = "*"
+ultralytics = "*"
+opencv-python = "*"
+dill = "*"
 
 [dev-packages]
 

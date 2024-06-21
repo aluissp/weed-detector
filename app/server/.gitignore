@@ -1,4 +1,10 @@
 .venv
 __pycache__
+runs
 
 !.vscode
+
+*.pt
+*.keras
+*.avi
+*.mp4

@@ -1,6 +1,6 @@
 FROM python:3.11-slim AS base
 WORKDIR /code
-RUN apt-get update
+RUN apt-get update && apt install libgl1-mesa-glx libglib2.0-0 -y
 RUN pip install pipenv
 
 FROM base AS builder

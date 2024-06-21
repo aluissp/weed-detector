@@ -1,0 +1,6 @@
+Dockerfile.*
+client/node_modules
+server/.venv
+.dockerignore
+.devcontainer.json
+.git
