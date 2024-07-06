@@ -14,15 +14,8 @@ import {
 export const PredictImage = () => {
 	const { handleCleanDropzoneData } = useUiContext();
 	const { readImage, dropzoneStatus, handleChangeFile } = useReadDropzoneImage();
-	const {
-		control,
-		errorImgz,
-		errorMaxDet,
-		imageStatus,
-		handlePredictImage,
-		handleSubmit,
-		register,
-	} = useImagePredictForm();
+	const { control, errorMaxDet, imageStatus, handlePredictImage, handleSubmit, register } =
+		useImagePredictForm();
 
 	return (
 		<section className='grid md:grid-cols-2 gap-x-2 items-start md:justify-between w-full text-white animate-fade'>
@@ -85,29 +78,29 @@ export const PredictImage = () => {
 						<h3 className='w-full text-left font-bold mb-3 col-span-2'>Parámetros de inferencia</h3>
 
 						<FormInput
-							id={inputNames.imgsz}
-							type='number'
-							labelText='Tamaño de la imagen para la inferencia'
-							error={errorImgz?.message}
-							placeholder='Ingrese un valor en pixeles'
-							{...register(inputNames.imgsz, {
-								required: 'Este campo es requerido',
-								min: { value: 32, message: 'El valor mínimo es 32' },
-								max: { value: 1920, message: 'El valor máximo es 1920' },
-							})}
-						/>
-
-						<FormInput
 							id={inputNames.max_det}
 							type='number'
 							labelText='Número máximo de detecciones'
 							error={errorMaxDet?.message}
 							placeholder='Ingrese un valor entero'
+							className='col-span-2 sm:col-span-1'
 							{...register(inputNames.max_det, {
 								required: 'Este campo es requerido',
 								min: { value: 1, message: 'El valor mínimo es 1' },
 								max: { value: 1000, message: 'El valor máximo es 1000' },
 							})}
+						/>
+
+						<RangeInput
+							id={inputNames.imgsz}
+							name={inputNames.imgsz}
+							labelText='Tamaño de imagen para la predicción'
+							step={64}
+							control={control}
+							min={128}
+							max={1920}
+							thickNumber={11}
+							className='col-span-2 sm:col-span-1'
 						/>
 
 						<RangeInput
@@ -195,7 +188,7 @@ export const PredictImage = () => {
 							control={control}
 							min={1}
 							max={10}
-							thickNumber={9}
+							thickNumber={8}
 							className='col-span-2 sm:col-span-1'
 						/>
 
