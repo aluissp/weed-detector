@@ -1,6 +1,5 @@
 /* eslint-disable react/prop-types */
 import { forwardRef } from 'react';
-import { twMerge } from 'tailwind-merge';
 import { InputError } from './InputError';
 
 const defaultStyles =
@@ -10,12 +9,12 @@ export const FormInput = forwardRef(function FormInput(props, ref) {
 	const { id, labelText, labelIsRequiredTick, error, className, ...inputProps } = props;
 
 	return (
-		<div>
+		<div className={className}>
 			<label htmlFor={id} className='block text-sm font-medium'>
 				{labelText} {labelIsRequiredTick && <span className='text-red-500'>*</span>}
 			</label>
 			<div className='relative'>
-				<input id={id} ref={ref} className={twMerge(defaultStyles, className)} {...inputProps} />
+				<input id={id} ref={ref} className={defaultStyles} {...inputProps} />
 			</div>
 			<InputError error={error} />
 		</div>
