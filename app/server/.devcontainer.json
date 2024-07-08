@@ -8,6 +8,7 @@
 		"ms-python.python",
 		"ms-python.vscode-pylance",
 		"ms-python.debugpy",
-		"ms-python.autopep8"
+		"ms-python.autopep8",
+		"GitHub.copilot"
 	]
 }
