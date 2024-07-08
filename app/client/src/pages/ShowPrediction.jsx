@@ -20,7 +20,7 @@ export const ShowPrediction = () => {
 	const name = predictionData?.jsonData?.name;
 
 	return (
-		<section className='grid md:grid-cols-2 gap-x-6 items-start md:justify-between w-full text-white animate-fade'>
+		<section className='flex flex-col md:grid md:grid-cols-2 gap-x-6 items-start md:justify-between w-full text-white animate-fade'>
 			{/* Left */}
 			<div className='flex flex-col w-full items-center justify-center mb-4'>
 				<Zoom>

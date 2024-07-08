@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { modelClassKeys } from '../constants';
+import { modelClassColors, modelClassKeys } from '../constants';
 
 export const PredictionsTable = ({ tableData }) => (
 	<div className='relative overflow-x-auto shadow-md rounded-lg'>
@@ -8,6 +8,9 @@ export const PredictionsTable = ({ tableData }) => (
 				<tr>
 					<th scope='col' className='px-6 py-3'>
 						Nombre
+					</th>
+					<th scope='col' className='px-6 py-3'>
+						Color
 					</th>
 					<th scope='col' className='px-6 py-3'>
 						Nro. de plantas
@@ -23,6 +26,7 @@ export const PredictionsTable = ({ tableData }) => (
 						<th scope='row' className='px-6 py-4 font-medium whitespace-nowrap text-white'>
 							{tableData[modelClassKeys.papa].className}
 						</th>
+						<td className='px-6 py-4'>{modelClassColors.papa}</td>
 						<td className='px-6 py-4'>{tableData[modelClassKeys.papa].count}</td>
 						<td className='px-6 py-4'>{tableData[modelClassKeys.papa].avgConfidence}</td>
 					</tr>
@@ -32,6 +36,7 @@ export const PredictionsTable = ({ tableData }) => (
 						<th scope='row' className='px-6 py-4 font-medium whitespace-nowrap text-white'>
 							{tableData[modelClassKeys.diente_leon].className}
 						</th>
+						<td className='px-6 py-4'>{modelClassColors.diente_leon}</td>
 						<td className='px-6 py-4'>{tableData[modelClassKeys.diente_leon].count}</td>
 						<td className='px-6 py-4'>{tableData[modelClassKeys.diente_leon].avgConfidence}</td>
 					</tr>
@@ -41,6 +46,7 @@ export const PredictionsTable = ({ tableData }) => (
 						<th scope='row' className='px-6 py-4 font-medium whitespace-nowrap text-white'>
 							{tableData[modelClassKeys.kikuyo].className}
 						</th>
+						<td className='px-6 py-4'>{modelClassColors.kikuyo}</td>
 						<td className='px-6 py-4'>{tableData[modelClassKeys.kikuyo].count}</td>
 						<td className='px-6 py-4'>{tableData[modelClassKeys.kikuyo].avgConfidence}</td>
 					</tr>
@@ -50,6 +56,7 @@ export const PredictionsTable = ({ tableData }) => (
 						<th scope='row' className='px-6 py-4 font-medium whitespace-nowrap text-white'>
 							{tableData[modelClassKeys.lengua_vaca].className}
 						</th>
+						<td className='px-6 py-4'>{modelClassColors.lengua_vaca}</td>
 						<td className='px-6 py-4'>{tableData[modelClassKeys.lengua_vaca].count}</td>
 						<td className='px-6 py-4'>{tableData[modelClassKeys.lengua_vaca].avgConfidence}</td>
 					</tr>
@@ -59,6 +66,7 @@ export const PredictionsTable = ({ tableData }) => (
 						<th scope='row' className='px-6 py-4 font-medium whitespace-nowrap text-white'>
 							{tableData[modelClassKeys.otro].className}
 						</th>
+						<td className='px-6 py-4'>{modelClassColors.otro}</td>
 						<td className='px-6 py-4'>{tableData[modelClassKeys.otro].count}</td>
 						<td className='px-6 py-4'>{tableData[modelClassKeys.otro].avgConfidence}</td>
 					</tr>
