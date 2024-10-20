@@ -1,4 +1,5 @@
 import yaml
+import fix_paths
 from imutils import paths
 from datasets import UploadDatasetRoboflow
 

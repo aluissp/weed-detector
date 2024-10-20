@@ -1,4 +1,5 @@
 import argparse
+import fix_paths
 from imutils import paths
 from datasets import ManualDatasetSplitter
 from preprocessing import AspectAwarePreprocessor
