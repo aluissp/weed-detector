@@ -1,12 +1,9 @@
 import os
-import sys
+import json
 import argparse
+import fix_paths
 from imutils import paths
-
-# Adding utils to sys path
-current_dir = os.path.dirname(os.path.realpath(__file__))
-parent_dir = os.path.dirname(current_dir)
-sys.path.append(parent_dir)
+from utils.inspect_results import search_word, get_best_metrics
 
 help_message = '''
 This cli script helps you to inspect the results
@@ -20,166 +17,209 @@ inspection_modes = {
     'model': 'inspect-model'
 }
 
-ap = argparse.ArgumentParser(description=help_message)
-ap.add_argument(
-    '-p', '--path', required=True,
-    help='Path to the train results folder.'
-)
-ap.add_argument(
-    '-w', '--word', type=str,
-    help='The key word to search.'
-)
-ap.add_argument(
-    '-m', '--mode', default=inspection_modes['all'],
-    choices=inspection_modes.values(),
-    help='Set the mode to inspect. Available options are: inspect-all (default), inspect-logs, inspect-metrics and inspect-model.'
-)
-ap.add_argument(
-    '-v', '--verbose', action='store_true',
-    help='Verbose mode.'
-)
-ap.add_argument(
-    '-s', '--save-inspection', action='store_true',
-    help='Save inspection in JSON format.'
-)
-ap.add_argument(
-    '-d', '--destination-path', type=str, default='out',
-    help='The path where the inspection file will be save.'
-)
 
-args = vars(ap.parse_args())
+def inspection_parser():
+    '''Parse the arguments of the inspection cli script.
 
-train_path = args['path']
-destination_path = args['destination_path']
-word = args['word']
-mode = args['mode']
-verbose = args['verbose']
-save_inspection = args['save_inspection']
+    Returns:
+        argparse.ArgumentParser: The arguments of the inspection cli script.
+    '''
+
+    ap = argparse.ArgumentParser(description=help_message)
+    ap.add_argument(
+        '-p', '--path', required=True,
+        help='Path to the train results folder.'
+    )
+    ap.add_argument(
+        '-w', '--word', type=str,
+        help='The key word to search.'
+    )
+    ap.add_argument(
+        '-m', '--mode', default=inspection_modes['all'],
+        choices=inspection_modes.values(),
+        help='Set the mode to inspect. Available options are: inspect-all (default), inspect-logs, inspect-metrics and inspect-model.'
+    )
+    ap.add_argument(
+        '-s', '--save-inspection', action='store_true',
+        help='Save inspection in JSON format.'
+    )
+    ap.add_argument(
+        '-d', '--destination-path', type=str, default='out',
+        help='The path where the inspection file will be save.'
+    )
+
+    return ap
 
 
-if mode in [inspection_modes['all'], inspection_modes['logs']] and word is None:
-    ap.error(f'The word argument is required for {inspection_modes["all"]} or {inspection_modes["logs"]} mode.')
+class InspectionResults:
+    '''Class to store the inspection results.'''
 
+    def __init__(self, cli_parser: argparse.ArgumentParser):
+        '''Initialize the inspection results.
 
-if verbose:
-    print(f'[INFO] Inspecting the results at: {train_path}')
+        Args:
+            cli_parser (argparse.ArgumentParser): CLI parser object.
+        '''
 
-valid_extensions = '.csv', '.pt', '.json', '.yaml', '.yml', '.txt', '.log'
-filenames = list(paths.list_files(train_path, validExts=valid_extensions))
+        args = vars(cli_parser.parse_args())
 
-# Paths that will be used in the inspection
-results_csv_path = None
-best_model_path = None
-last_model_path = None
-output_log_paths = []
+        # CLI arguments
+        self.train_path = os.path.realpath(args['path'])
+        self.destination_path = args['destination_path']
+        self.word = args['word']
+        self.mode = args['mode']
+        self.save_inspection = args['save_inspection']
+        self.cli_parser = cli_parser
 
-# Inspection results
-inspection_results = {
-    'path': train_path,
-    'word': word,
-    'mode': mode,
-    'inspection_name': None,
-    'metrics': None,
-    'logs': None,
-    'models': None
-}
+        # Valid files
+        valid_extensions = '.csv', '.pt', '.json', '.yaml', '.yml', '.txt', '.log'
+        self.filenames = list(paths.list_files(self.train_path, validExts=valid_extensions))
 
-for filename in filenames:
+        # Paths that will be used in the inspection
+        self.results_csv_path = None
+        self.best_model_path = None
+        self.last_model_path = None
+        self.output_log_paths = []
 
-    results_csv_name = 'results.csv'
-
-    if filename.endswith(results_csv_name) and results_csv_path is None:
-        results_csv_path = filename
-    elif filename.endswith(results_csv_name) and results_csv_path is not None:
-        ap.error('It looks like the folder has more than one results.csv file. The inspection was aborted!')
-
-    best_model_name, last_model_name = 'best.pt', 'last.pt'
-
-    if filename.endswith(best_model_name) and best_model_path is None:
-        best_model_path = filename
-    elif filename.endswith(best_model_name) and best_model_path is not None:
-        ap.error('It looks like the folder has more than one best.pt file. The inspection was aborted!')
-
-    if filename.endswith(last_model_name) and last_model_path is None:
-        last_model_path = filename
-    elif filename.endswith(last_model_name) and last_model_path is not None:
-        ap.error('It looks like the folder has more than one last.pt file. The inspection was aborted!')
-
-    output_log_name = 'output.log'
-
-    if filename.endswith(output_log_name):
-        output_log_paths.append(filename)
-
-if results_csv_path is None:
-    print('[WARNING] The results.csv file is missing.')
-
-if best_model_path is None:
-    print('[WARNING] The best.pt file is missing.')
-
-if last_model_path is None:
-    print('[WARNING] The last.pt file is missing.')
-
-if len(output_log_paths) == 0:
-    print('[WARNING] The output.log file is missing.')
-
-
-if mode in [inspection_modes['all'], inspection_modes['metrics']]:
-    from utils.inspect_results import get_best_metrics
-
-    try:
-        best_metrics = get_best_metrics(results_csv_path)
-        inspection_results['metrics'] = {
-            'path': results_csv_path,
-            'best_metrics': best_metrics
+        # Inspection results
+        self.inspection_results = {
+            'path': self.train_path,
+            'word': self.word,
+            'mode': self.mode,
+            'inspection_name': None,
+            'metrics': None,
+            'logs': None,
+            'models': None
         }
-    except Exception as e:
-        print(f'[WARNING] {e}')
 
-if mode in [inspection_modes['all'], inspection_modes['logs']]:
-    from utils.inspect_results import search_word
+        if self.mode in [inspection_modes['all'], inspection_modes['logs']] and self.word is None:
+            self.cli_parser.error(
+                f'The word argument is required for {inspection_modes["all"]} or {inspection_modes["logs"]} mode.'
+            )
 
-    logs_inspection = []
+        print(f'[INFO] Inspecting the results at: {self.train_path}')
 
-    for output in output_log_paths:
+    def load_file_paths(self):
+        '''Load the file paths.'''
+
+        for filename in self.filenames:
+
+            results_csv_name = 'results.csv'
+
+            if filename.endswith(results_csv_name) and self.results_csv_path is None:
+                self.results_csv_path = filename
+            elif filename.endswith(results_csv_name) and self.results_csv_path is not None:
+                self.cli_parser.error(
+                    'It looks like the folder has more than one results.csv file. The inspection was aborted!'
+                )
+
+            best_model_name, last_model_name = 'best.pt', 'last.pt'
+
+            if filename.endswith(best_model_name) and self.best_model_path is None:
+                self.best_model_path = filename
+            elif filename.endswith(best_model_name) and self.best_model_path is not None:
+                self.cli_parser.error(
+                    'It looks like the folder has more than one best.pt file. The inspection was aborted!'
+                )
+
+            if filename.endswith(last_model_name) and self.last_model_path is None:
+                self.last_model_path = filename
+            elif filename.endswith(last_model_name) and self.last_model_path is not None:
+                self.cli_parser.error(
+                    'It looks like the folder has more than one last.pt file. The inspection was aborted!'
+                )
+
+            output_log_name = 'output.log'
+
+            if filename.endswith(output_log_name):
+                self.output_log_paths.append(filename)
+
+    def check_missing_files(self):
+        '''Check if the required files are missing.'''
+
+        if self.results_csv_path is None:
+            print('[WARNING] The results.csv file is missing.')
+
+        if self.best_model_path is None:
+            print('[WARNING] The best.pt file is missing.')
+
+        if self.last_model_path is None:
+            print('[WARNING] The last.pt file is missing.')
+
+        if len(self.output_log_paths) == 0:
+            print('[WARNING] The output.log file is missing.')
+
+    def inspect_metrics(self):
+        '''Inspect the metrics of the training.'''
+
+        if self.mode not in [inspection_modes['all'], inspection_modes['metrics']]:
+            return
+
         try:
-            lines = search_word(output, word)
-            logs_inspection.append({'path': output, 'lines': lines})
+            best_metrics, last_metrics = get_best_metrics(self.results_csv_path)
+            self.inspection_results['metrics'] = {
+                'path': self.results_csv_path,
+                'best_metrics': best_metrics,
+                'last_metrics': last_metrics
+            }
         except Exception as e:
             print(f'[WARNING] {e}')
 
-    inspection_results['logs'] = logs_inspection
+    def inspect_logs(self):
+        '''Inspect the logs of the training.'''
 
+        if self.mode not in [inspection_modes['all'], inspection_modes['logs']]:
+            return
 
-if mode in [inspection_modes['all'], inspection_modes['model']]:
+        logs_inspection = []
 
-    models_args = []
+        for output in self.output_log_paths:
+            try:
+                lines = search_word(output, self.word)
+                logs_inspection.append({'path': output, 'lines': lines})
+            except Exception as e:
+                print(f'[WARNING] {e}')
 
-    if best_model_path is not None:
-        models_args.append({
-            'name': 'best',
-            'path': best_model_path,
-            'train_args': None
-        })
+        self.inspection_results['logs'] = logs_inspection
 
-    if last_model_path is not None:
-        models_args.append({
-            'name': 'last',
-            'path': last_model_path,
-            'train_args': None
-        })
+    def inspect_models(self):
+        '''Inspect the models of the training.'''
 
-    inspection_results['models'] = models_args
+        if self.mode not in [inspection_modes['all'], inspection_modes['model']]:
+            return
 
-if inspection_results['metrics']:
+        models_args = []
 
-    epoch = inspection_results['metrics']['best_metrics']['epoch']
-    mAP_5 = inspection_results['metrics']['best_metrics']['metrics/mAP50(B)']
-    mAP_5_95 = inspection_results['metrics']['best_metrics']['metrics/mAP50-95(B)']
-    recall = inspection_results['metrics']['best_metrics']['metrics/recall(B)']
-    precision = inspection_results['metrics']['best_metrics']['metrics/precision(B)']
-    fitness = inspection_results['metrics']['best_metrics']['fitness']
+        if self.best_model_path is not None:
+            models_args.append({
+                'name': 'best',
+                'path': self.best_model_path,
+                'train_args': None
+            })
 
-    print(f'''
+        if self.last_model_path is not None:
+            models_args.append({
+                'name': 'last',
+                'path': self.last_model_path,
+                'train_args': None
+            })
+
+        self.inspection_results['models'] = models_args
+
+    def print_metrics(self):
+        '''Print the metrics of the training.'''
+
+        if not self.inspection_results['metrics']:
+            return
+
+        epoch = self.inspection_results['metrics']['best_metrics']['epoch']
+        mAP_5 = self.inspection_results['metrics']['best_metrics']['metrics/mAP50(B)']
+        mAP_5_95 = self.inspection_results['metrics']['best_metrics']['metrics/mAP50-95(B)']
+        recall = self.inspection_results['metrics']['best_metrics']['metrics/recall(B)']
+        precision = self.inspection_results['metrics']['best_metrics']['metrics/precision(B)']
+        fitness = self.inspection_results['metrics']['best_metrics']['fitness']
+
+        print(f'''
 [INFO] Best metrics:
 Best model was saved at epoch: {epoch}
 Metrics:
@@ -190,12 +230,91 @@ Metrics:
   - Fitness: {fitness}
 ''')
 
+    def print_logs(self):
+        '''Print the logs of the training.'''
 
-if inspection_results['logs']:
+        if not self.inspection_results['logs']:
+            return
 
-    print(f'[INFO] Logs inspection:')
+        for log in self.inspection_results['logs']:
+            print(f'Log file: {log["path"]}')
+            for line in log['lines']:
+                print(line)
 
-    for log in inspection_results['logs']:
-        print(f'Log file: {log["path"]}')
-        for line in log['lines']:
-            print(line)
+    def save_inspection_in_json(self):
+        '''Save the inspection in JSON format.'''
+
+        if not self.save_inspection:
+            return
+
+        parent_dir = self.train_path.split(os.path.sep)[-1]
+        inspection_name = f'{parent_dir}_inspection.json'
+
+        if not os.path.exists(self.destination_path):
+            os.makedirs(self.destination_path)
+
+        is_name_ok = False
+
+        while not is_name_ok:
+
+            input_message = f'\nPlease, type the filename. Press enter to use the default name: {inspection_name}\n'
+            user_inspection_name = input(input_message)
+
+            if user_inspection_name == '':
+                is_name_ok = True
+
+            elif user_inspection_name.endswith('.json'):
+                inspection_name = user_inspection_name
+                is_name_ok = True
+
+            else:
+                print('The inspection name must end with .json')
+
+            if os.path.exists(os.path.join(self.destination_path, inspection_name)):
+                print('The inspection file already exists. Please, choose another name.')
+                is_name_ok = False
+
+        self.inspection_results['inspection_name'] = inspection_name
+
+        destination_path = os.path.join(self.destination_path, inspection_name)
+
+        with open(destination_path, 'w') as file:
+            json.dump(self.inspection_results, file, indent=4)
+
+        print(f'[INFO] The inspection was saved at: {destination_path}')
+
+    def inspect(self):
+        '''Inspect the results of the training.'''
+
+        # Load the file paths
+        self.load_file_paths()
+
+        # Check missing files
+        self. check_missing_files()
+
+        # Inspect the metrics
+        self.inspect_metrics()
+
+        # Inspect the logs
+        self.inspect_logs()
+
+        # Inspect models
+        self.inspect_models()
+
+        # Print the metrics
+        self.print_metrics()
+
+        # Print the logs
+        self.print_logs()
+
+        # Save the inspection
+        self.save_inspection_in_json()
+
+
+if __name__ == '__main__':
+
+    # Parse the arguments
+    ap = inspection_parser()
+
+    # Inspect the results
+    InspectionResults(ap).inspect()
