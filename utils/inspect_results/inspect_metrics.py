@@ -8,7 +8,7 @@ def get_best_metrics(path: str):
         path (str): The path to the results file, it must be a CSV file.
 
     Returns:
-        dict: The best metrics.
+        tuple: A tuple with the best metrics and the last
 
     Raises:
         ValueError: If the file is not a CSV file.
@@ -37,4 +37,6 @@ def get_best_metrics(path: str):
 
     best_metrics = dict(results.iloc[best_epoch, :])
 
-    return best_metrics
+    last_metrics = dict(results.iloc[-1, :])
+
+    return best_metrics, last_metrics

@@ -1,7 +1,7 @@
 import torch
 
 
-def get_model_train_args(path):
+def get_model_train_args(path: str):
     '''Get the train arguments from a model.
 
     Args:

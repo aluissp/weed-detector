@@ -1,5 +1,5 @@
 
-def search_word(file_path, word):
+def search_word(file_path: str, word: str):
     '''Search for a word in a log/text file.
 
     Args:
