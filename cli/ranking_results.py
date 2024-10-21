@@ -26,12 +26,12 @@ def parser():
     return ap
 
 
-class MetricsRanking:
+class RankingResults:
     '''Class to rank the best metrics from the train results folder.
     '''
 
     def __init__(self, cli_parser: argparse.ArgumentParser):
-        '''Constructor of the MetricsRanking class.
+        '''Constructor of the RankingResults class.
 
         Args:
             cli_parser (argparse.ArgumentParser): The arguments of the inspection cli script.
@@ -47,51 +47,66 @@ class MetricsRanking:
         self.filenames = list(paths.list_files(self.path, validExts=valid_extensions))
 
         # Results
-        self.metrics_sorted = pd.DataFrame()
-        self.best_metric = {}
+        self.best_metrics = pd.DataFrame()
+        self.last_metrics = pd.DataFrame()
+        self.metrics = {}
 
-    def sort_metrics(self):
-        '''Sort the metrics from the train results folder.
+    def load_metrics(self):
+        '''Load the metrics from the train results folder.
         '''
 
         for filename in self.filenames:
 
-            if filename.endswith('best_metric.json'):
+            if filename.endswith('metrics.json'):
                 continue
 
             with open(filename, 'r') as file:
                 data = json.load(file)
 
-            metric = data['metrics']['best_metrics']
-            metric['path'] = data['metrics']['path']
+            for key in ['best_metrics', 'last_metrics']:
 
-            metric = pd.DataFrame([metric])
+                data['metrics'][key]['path'] = data['metrics']['path']
 
-            self.metrics_sorted = pd.concat([self.metrics_sorted, metric], ignore_index=True)
+                data_df = pd.DataFrame([data['metrics'][key]])
 
-        self.metrics_sorted.sort_values(by='fitness', ascending=False, inplace=True)
-
-        self.best_metric = self.metrics_sorted.iloc[0].to_dict()
+                setattr(self, key, pd.concat([getattr(self, key), data_df], ignore_index=True))
 
     def save_results(self):
-        '''Save the best metrics in a excel file.
+        '''Save the best metrics in a json/excel files.
         '''
 
+        # Save ranking in excel file
         file_path = os.path.join(self.path, 'ranking.xlsx')
 
-        self.metrics_sorted.to_excel(file_path, index=False)
+        with pd.ExcelWriter(file_path) as writer:
 
-        file_path = os.path.join(self.path, 'best_metric.json')
+            for name in ['best_metrics', 'last_metrics']:
+
+                self.metrics[name] = {}
+
+                df = getattr(self, name)
+
+                for key in ['metrics/mAP50(B)', 'metrics/mAP50-95(B)', 'fitness']:
+
+                    # Sort and get best metric
+                    df.sort_values(by=key, ascending=False, inplace=True)
+
+                    self.metrics[name][key] = df.iloc[0].to_dict()
+
+                    # Save in excel file
+                    key = key.replace('/', '-')
+                    df.to_excel(writer, sheet_name=f'{key}-ranking', index=False)
+
+        # Save best metrics in json file
+        file_path = os.path.join(self.path, 'metrics.json')
 
         with open(file_path, 'w') as file:
-            json.dump(self.best_metric, file)
+            json.dump(self.metrics, file, indent=4)
 
     def run(self):
-        '''Run the MetricsRanking class.
-        '''
 
         # Sort the metrics
-        self.sort_metrics()
+        self.load_metrics()
 
         # Save the results
         self.save_results()
@@ -99,4 +114,4 @@ class MetricsRanking:
 
 if __name__ == '__main__':
     cli_parser = parser()
-    MetricsRanking(cli_parser).run()
+    RankingResults(cli_parser).run()
