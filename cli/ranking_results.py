@@ -94,8 +94,8 @@ class RankingResults:
                     self.metrics[name][key] = df.iloc[0].to_dict()
 
                     # Save in excel file
-                    key = key.replace('/', '-')
-                    df.to_excel(writer, sheet_name=f'{key}-ranking', index=False)
+                    key = key.replace('metrics/', '').replace('(B)', '')
+                    df.to_excel(writer, sheet_name=f'{name.replace('_metrics', '')}-{key}-ranking', index=False)
 
         # Save best metrics in json file
         file_path = os.path.join(self.path, 'metrics.json')
