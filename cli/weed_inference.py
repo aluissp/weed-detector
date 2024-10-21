@@ -1,4 +1,5 @@
 import argparse
+import fix_paths
 from inference import InferenceImages
 
 
