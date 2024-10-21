@@ -56,6 +56,9 @@ class MetricsRanking:
 
         for filename in self.filenames:
 
+            if filename.endswith('best_metric.json'):
+                continue
+
             with open(filename, 'r') as file:
                 data = json.load(file)
 
