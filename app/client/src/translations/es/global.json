@@ -1,0 +1,136 @@
+{
+  "modelClasses": {
+    "potato": "Papa",
+    "cowTongue": "Lengua de vaca",
+    "grass": "Kikuyo",
+    "dandelion": "Diente de león",
+    "others": "Otros"
+  },
+  "modelClassColors": {
+    "potato": "negro",
+    "cowTongue": "blanco",
+    "grass": "celeste",
+    "dandelion": "azul",
+    "others": "verde"
+  },
+  "header": {
+    "title": {
+      "left": "Detector de",
+      "right": "Malezas",
+      "full": "Detector de malezas"
+    },
+    "lang": "Español"
+  },
+  "navbar": {
+    "analyze": "Analizar imagen",
+    "results": "Resultados",
+    "history": "Historial"
+  },
+  "common": {
+    "inputPlaceholder": "Ingrese un valor entero",
+    "required": "Este campo es requerido",
+    "minValue": "El valor mínimo es {{min}}",
+    "maxValue": "El valor máximo es {{max}}"
+  },
+  "predictionPage": {
+    "dropzone": {
+      "isDragAcceptedMessage": "¡Suelta el archivo para subirlo!",
+      "selectFileMessage": "Seleccionar un archivo",
+      "dragFileMessage": "o arrastre y suéltelo aquí."
+    },
+    "exampleImages": {
+      "imgAlt": "Imagen de prueba",
+      "imgSelected": "Seleccionada",
+      "imgToSelect": "Elegir"
+    },
+    "subtitles": {
+      "imageLoaded": "Imagen cargada",
+      "imageClasses": "Elija las clases a predecir",
+      "imageExamples": "Imágenes de prueba",
+      "parameters": "Parámetros de detección",
+      "inferenceParameters": "Parámetros de inferencia",
+      "visualizationParameters": "Parámetros de visualización"
+    },
+    "inferenceParameters": {
+      "maxDetections": "Número máximo de detecciones",
+      "imageSize": "Tamaño de imagen para la inferencia",
+      "conf": "Umbral mínimo de confianza",
+      "iou": "Umbral mínimo de IoU",
+      "augment": "Aumento de imagen durante la inferencia"
+    },
+    "visualizationParameters": {
+      "showLabels": "Mostrar etiquetas",
+      "showConf": "Mostrar nivel de confianza",
+      "saveTxt": "Guardar resultados en texto",
+      "saveConf": "Guardar puntuaciones de confianza",
+      "saveCrop": "Guardar recortes de detección",
+      "lineWidth": "Ancho de línea del recuadro"
+    },
+    "buttons": {
+      "clean": "Limpiar imagen",
+      "detect": "Detectar malezas"
+    },
+    "messages": {
+      "loadingPrediction": "Detectando malezas...",
+      "detectionSuccess": "¡Detección de malezas exitosa!",
+      "fileLoadedSuccess": "¡El archivo {{fileName}} se ha cargado correctamente!"
+    },
+    "alerts": {
+      "imageNotFound": "No se ha cargado ninguna imagen",
+      "noClassSelected": "Por favor, seleccione al menos una clase",
+      "detectionFailed": "Error al detectar malezas",
+      "noFileSelected": "No se ha seleccionado ningún archivo",
+      "noValidFormat": "El archivo seleccionado no tiene un formato de imagen válido"
+    }
+  },
+  "showResultsPage": {
+    "emptyCard": {
+      "title": "No hay resultados para mostrar",
+      "message": "Suba una imagen para obtener resultados de predicción de la imagen."
+    },
+    "predictionsTable": {
+      "nameColumn": "Nombre",
+      "colorColumn": "Color",
+      "numberPlantsColumn": "Nro. de plantas",
+      "confidenceColumn": "Promedio de confianza"
+    },
+    "subtitle": "Resultados",
+    "summary": {
+      "numberDetectionsLabel": "Número de detecciones",
+      "inferenceTimeLabel": "Tiempo de inferencia",
+      "processingTimeLabel": "Tiempo de procesamiento",
+      "postprocessingTimeLabel": "Tiempo de postprocesamiento",
+      "valueFormat": "{{value}} milisegundos"
+    },
+    "downloadResults": "Descargar resultados"
+  },
+  "historyPage": {
+    "historyTable": {
+      "filterInput": "Buscar un registro...",
+      "cleanHistory": "Limpiar todo el historial",
+      "idColumn": "id",
+      "nameColumn": "Nombre",
+      "dateColumn": "Fecha",
+      "actionsColumn": "Acciones",
+      "viewButton": "Ver",
+      "downloadButton": "Descargar",
+      "deleteButton": "Eliminar",
+      "previousButton": "Anterior",
+      "nextButton": "Siguiente",
+      "firstPageButton": "Primera página",
+      "lastPageButton": "Última página"
+    },
+    "subtitles": {
+      "empty": "Historial vacío",
+      "default": "Historial de predicciones"
+    },
+    "messages": {
+      "cleanHistory": "Historial limpiado con éxito",
+      "deleteHistory": "Registro eliminado con éxito"
+    },
+    "alerts": {
+      "cleanHistory": "Error al limpiar el historial",
+      "deleteHistory": "Error al eliminar el registro"
+    }
+  }
+}

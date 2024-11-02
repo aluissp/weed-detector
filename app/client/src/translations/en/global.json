@@ -1,0 +1,136 @@
+{
+  "modelClasses": {
+    "potato": "Potato",
+    "cowTongue": "Cow tongue",
+    "grass": "Grass",
+    "dandelion": "Dandelion",
+    "others": "Others"
+  },
+  "modelClassColors": {
+    "potato": "black",
+    "cowTongue": "white",
+    "grass": "sky-blue",
+    "dandelion": "blue",
+    "others": "green"
+  },
+  "header": {
+    "title": {
+      "left": "Weed",
+      "right": "Detector",
+      "full": "Weed detector"
+    },
+    "lang": "English"
+  },
+  "navbar": {
+    "analyze": "Analyze image",
+    "results": "Results",
+    "history": "History"
+  },
+  "common": {
+    "inputPlaceholder": "Type a number",
+    "required": "This field is required",
+    "minValue": "The minimum value is {{min}}",
+    "maxValue": "The maximum value is {{max}}"
+  },
+  "predictionPage": {
+    "dropzone": {
+      "isDragAcceptedMessage": "Drop the file here!",
+      "selectFileMessage": "Select a file",
+      "dragFileMessage": "or drag and drop a file here"
+    },
+    "exampleImages": {
+      "imgAlt": "Example image",
+      "imgSelected": "Selected",
+      "imgToSelect": "Select"
+    },
+    "subtitles": {
+      "imageLoaded": "Image loaded",
+      "imageClasses": "Select the classes to predict",
+      "imageExamples": "Example images",
+      "parameters": "Detection parameters",
+      "inferenceParameters": "Inference parameters",
+      "visualizationParameters": "Visualization parameters"
+    },
+    "inferenceParameters": {
+      "maxDetections": "Maximum number of detections",
+      "imageSize": "Image size for inference",
+      "conf": "Minimum confidence threshold",
+      "iou": "Minimum IoU threshold",
+      "augment": "Image augmentation during inference"
+    },
+    "visualizationParameters": {
+      "showLabels": "Show labels",
+      "showConf": "Show confidence",
+      "saveTxt": "Save detections in text",
+      "saveConf": "Save confidence",
+      "saveCrop": "Save crop images",
+      "lineWidth": "Bounding box line width"
+    },
+    "buttons": {
+      "clean": "Remove image",
+      "detect": "Detect weeds"
+    },
+    "messages": {
+      "loadingPrediction": "Detecting weeds...",
+      "detectionSuccess": "Weeds detected successfully!",
+      "fileLoadedSuccess": "The file {{fileName}} has been loaded successfully"
+    },
+    "alerts": {
+      "imageNotFound": "Image not found",
+      "noClassSelected": "Please, select at least one class",
+      "detectionFailed": "Error detecting weeds",
+      "noFileSelected": "No file selected",
+      "noValidFormat": "The file selected is not a valid image format"
+    }
+  },
+  "showResultsPage": {
+    "emptyCard": {
+      "title": "No results to show",
+      "message": "Upload an image and detect weeds to see the results"
+    },
+    "predictionsTable": {
+      "nameColumn": "Name",
+      "colorColumn": "Color",
+      "numberPlantsColumn": "Number of plants",
+      "confidenceColumn": "Confidence average"
+    },
+    "subtitle": "Results",
+    "summary": {
+      "numberDetectionsLabel": "Number of detections",
+      "inferenceTimeLabel": "Inference time",
+      "processingTimeLabel": "Processing time",
+      "postprocessingTimeLabel": "Postprocessing time",
+      "valueFormat": "{{value}} milliseconds"
+    },
+    "downloadResults": "Download results"
+  },
+  "historyPage": {
+    "historyTable": {
+      "filterInput": "Find a prediction...",
+      "cleanHistory": "Clean all history",
+      "idColumn": "id",
+      "nameColumn": "Name",
+      "dateColumn": "Date",
+      "actionsColumn": "Actions",
+      "viewButton": "View",
+      "downloadButton": "Download",
+      "deleteButton": "Delete",
+      "previousButton": "Previous",
+      "nextButton": "Next",
+      "firstPageButton": "First page",
+      "lastPageButton": "Last page"
+    },
+    "subtitles": {
+      "empty": "Empty history",
+      "default": "Predictions history"
+    },
+    "messages": {
+      "cleanHistory": "History cleaned successfully",
+      "deleteHistory": "Prediction deleted successfully"
+    },
+    "alerts": {
+      "cleanHistory": "Error cleaning the history",
+      "deleteHistory": "Error deleting the prediction"
+    }
+  }
+}
