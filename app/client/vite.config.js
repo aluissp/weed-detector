@@ -5,6 +5,7 @@ import { fileURLToPath, URL } from 'node:url';
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
 	const env = loadEnv(mode, process.cwd());
+	const apiPrefix = env?.VITE_USER_NODE_ENV === 'development' ? '/api' : '/';
 
 	return {
 		plugins: [react()],
@@ -15,7 +16,7 @@ export default defineConfig(({ command, mode }) => {
 		},
 		server: {
 			proxy: {
-				'/': {
+				[apiPrefix]: {
 					target: env.VITE_API_URL,
 					rewrite: path => path.replace(/^\/api/, ''),
 				},

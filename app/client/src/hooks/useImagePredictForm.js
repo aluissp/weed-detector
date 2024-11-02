@@ -16,6 +16,8 @@ import {
 	status,
 } from '../constants';
 
+const apiPrefix = import.meta.env.DEV ? '/api' : '/';
+
 export const useImagePredictForm = () => {
 	const { handleSetCurrentPage } = useUiContext();
 	const { add, getAll, deleteRecord } = useIndexedDB(dbStoreName);
@@ -92,7 +94,7 @@ export const useImagePredictForm = () => {
 		const config = { headers: { 'Content-Type': 'multipart/form-data' }, responseType: 'blob' };
 
 		const request = axios
-			.post('predict?' + queryParams, formData, config)
+			.post(apiPrefix + 'predict?' + queryParams, formData, config)
 			.then(response => response.data)
 			.then(unzipImageResponse)
 			.then(async file => {
