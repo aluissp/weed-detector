@@ -16,7 +16,7 @@ import {
 	status,
 } from '../constants';
 
-const apiPrefix = import.meta.env.DEV ? '/api' : '/';
+const apiPrefix = import.meta.env.DEV ? '/api/' : '/';
 
 export const useImagePredictForm = () => {
 	const { handleSetCurrentPage } = useUiContext();
