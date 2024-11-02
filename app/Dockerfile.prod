@@ -3,7 +3,7 @@ WORKDIR /code
 RUN apt-get update && apt install libgl1-mesa-glx libglib2.0-0 -y
 RUN pip install pipenv
 
-FROM node:22 as client-builder
+FROM node:22 AS client-builder
 WORKDIR /code
 COPY client/package.json .
 COPY client/yarn.lock .
