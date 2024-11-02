@@ -3,17 +3,15 @@ from werkzeug.datastructures import ImmutableMultiDict
 
 # All arguments
 ['conf', 'iou', 'imgsz', 'max_det',
- 'augment', 'agnostic_nms', 'classes',
- 'save_crop', 'save_txt', 'save_conf',
- 'show_labels', 'show_conf', 'line_width']
+ 'augment', 'classes', 'save_crop',
+ 'save_txt', 'save_conf', 'show_labels',
+ 'show_conf', 'line_width']
 
 float_arguments = ['conf', 'iou']
 integer_arguments = ['imgsz', 'max_det', 'line_width']
 list_arguments = ['classes']
-boolean_arguments = ['augment', 'agnostic_nms',
-                     'save_crop', 'save_txt',
-                     'save_conf', 'show_labels',
-                     'show_conf']
+boolean_arguments = ['augment', 'save_crop', 'save_txt',
+                     'save_conf', 'show_labels', 'show_conf']
 
 
 def get_img_predict_params(params: ImmutableMultiDict):

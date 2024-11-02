@@ -7,7 +7,6 @@ export const defaultPredictParameters = Object.freeze({
 	[inputNames.conf]: 0.25,
 	[inputNames.iou]: 0.7,
 	[inputNames.augment]: false,
-	[inputNames.agnostic_nms]: false,
 	[inputNames.save_crop]: false,
 	[inputNames.save_txt]: false,
 	[inputNames.save_conf]: false,

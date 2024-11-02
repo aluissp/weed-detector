@@ -5,7 +5,6 @@ export const inputNames = Object.freeze({
 	conf: 'conf',
 	iou: 'iou',
 	augment: 'augment',
-	agnostic_nms: 'agnostic_nms',
 	save_crop: 'save_crop',
 	save_txt: 'save_txt',
 	save_conf: 'save_conf',

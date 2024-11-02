@@ -75,7 +75,7 @@ export const PredictImage = () => {
 
 				<form onSubmit={handleSubmit(handlePredictImage)}>
 					<div className='grid grid-cols-2 gap-x-2 text-sm'>
-						<h3 className='w-full text-left font-bold mb-3 col-span-2'>Parámetros de inferencia</h3>
+						<h3 className='w-full text-left font-bold mb-3 col-span-2 text-base'>Parámetros de inferencia</h3>
 
 						<FormInput
 							id={inputNames.max_det}
@@ -97,8 +97,8 @@ export const PredictImage = () => {
 							labelText='Tamaño de imagen para la predicción'
 							step={64}
 							control={control}
-							min={128}
-							max={1920}
+							min={448}
+							max={1024}
 							thickNumber={11}
 							className='col-span-2 sm:col-span-1'
 						/>
@@ -129,54 +129,48 @@ export const PredictImage = () => {
 
 						<ToggleInput
 							id={inputNames.augment}
-							labelText='Aumento en inferencia'
-							className='my-3 sm:my-6 col-span-2 sm:col-span-1'
+							labelText='Aumento de imagen durante la inferencia'
+							className='my-3 sm:my-5 col-span-2'
 							{...register(inputNames.augment)}
 						/>
 
-						<ToggleInput
-							id={inputNames.agnostic_nms}
-							labelText='Supresión No Máxima (NMS)'
-							className='my-3 sm:my-6 col-span-2 sm:col-span-1'
-							{...register(inputNames.agnostic_nms)}
-						/>
 
-						<h3 className='w-full text-left font-bold mt-3 col-span-2'>
+						<h3 className='w-full text-left font-bold mt-3 col-span-2 text-base'>
 							Parámetros de visualización
 						</h3>
 
 						<ToggleInput
 							id={inputNames.show_labels}
 							labelText='Mostrar etiquetas'
-							className='my-3 sm:my-6 col-span-2 sm:col-span-1'
+							className='my-3 sm:my-5 col-span-2 sm:col-span-1'
 							{...register(inputNames.show_labels)}
 						/>
 
 						<ToggleInput
 							id={inputNames.show_conf}
 							labelText='Mostrar nivel de confianza'
-							className='my-3 sm:my-6 col-span-2 sm:col-span-1'
+							className='my-3 sm:my-5 col-span-2 sm:col-span-1'
 							{...register(inputNames.show_conf)}
 						/>
 
 						<ToggleInput
 							id={inputNames.save_txt}
 							labelText='Guardar resultados en texto'
-							className='my-3 sm:my-6 col-span-2 sm:col-span-1'
+							className='my-3 sm:my-5 col-span-2 sm:col-span-1'
 							{...register(inputNames.save_txt)}
 						/>
 
 						<ToggleInput
 							id={inputNames.save_conf}
 							labelText='Incluir puntuaciones de confianza'
-							className='my-3 sm:my-6 col-span-2 sm:col-span-1'
+							className='my-3 sm:my-5 col-span-2 sm:col-span-1'
 							{...register(inputNames.save_conf)}
 						/>
 
 						<ToggleInput
 							id={inputNames.save_crop}
 							labelText='Guardar recortes de detecciones'
-							className='my-3 sm:my-6 col-span-2 sm:col-span-1'
+							className='my-3 sm:my-5 col-span-2 sm:col-span-1'
 							{...register(inputNames.save_crop)}
 						/>
 
