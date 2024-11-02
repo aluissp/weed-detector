@@ -1,5 +1,4 @@
 import JSZip from 'jszip';
-import { modelClassNames } from '../constants';
 
 export const unzipImageResponse = async file => {
 	const zip = await JSZip.loadAsync(file);
@@ -40,10 +39,9 @@ const readImage = image => {
 
 const getTableSummary = summary => {
 	const tableData = summary.reduce((acc, { class: classId, confidence }) => {
-		const className = modelClassNames[classId];
 
 		if (!acc[classId]) {
-			acc[classId] = { className, avgConfidence: confidence, count: 1 };
+			acc[classId] = { avgConfidence: confidence, count: 1 };
 			return acc;
 		}
 

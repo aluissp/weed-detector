@@ -1,12 +1,15 @@
 import { TbPhotoSearch } from 'react-icons/tb';
-import { FormButton } from '../common/components';
+import { useTranslation } from 'react-i18next';
 import { LiaListSolid } from 'react-icons/lia';
 import { RiHistoryFill } from 'react-icons/ri';
+import { FormButton } from '../common/components';
 import { useUiContext } from '../hooks';
 import { pageNames } from '../constants';
 
 export const NavBar = () => {
+	const [t] = useTranslation('global');
 	const { currentPage, handleSetCurrentPage } = useUiContext();
+
 	return (
 		<nav className='text-white text-xs sm:text-sm bg-transparent border-t border-b border-zinc-800 my-6'>
 			<div className='py-4 mx-auto flex items-center justify-between gap-2'>
@@ -16,14 +19,14 @@ export const NavBar = () => {
 						onClick={() => handleSetCurrentPage({ pageName: pageNames.predictPage })}
 					>
 						<TbPhotoSearch className='text-xl' />
-						Analizar imagen
+						{t('navbar.analyze')}
 					</FormButton>
 					<FormButton
 						focus={currentPage === pageNames.resultsPage}
 						onClick={() => handleSetCurrentPage({ pageName: pageNames.resultsPage })}
 					>
 						<LiaListSolid className='text-xl' />
-						Resultados
+						{t('navbar.results')}
 					</FormButton>
 				</div>
 				<FormButton
@@ -31,7 +34,7 @@ export const NavBar = () => {
 					className='hover:bg-zinc-700 '
 				>
 					<RiHistoryFill className='text-xl' />
-					Historial
+					{t('navbar.history')}
 				</FormButton>
 			</div>
 		</nav>

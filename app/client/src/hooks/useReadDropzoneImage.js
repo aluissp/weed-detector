@@ -1,11 +1,13 @@
 import { imageTypes } from '../types';
 import { useUiContext } from './useUiContext';
+import { useTranslation } from 'react-i18next';
 import { useImagesContext } from './useImagesContext';
 import { dropzoneStatus as constantDropzoneStatus } from '../constants';
 
 const fileTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
 export const useReadDropzoneImage = () => {
+	const [t] = useTranslation('global');
 	const { dropzoneStatus, handleDropzoneVisibility } = useUiContext();
 	const { readImage, readImageFile, handleSaveImageInContext, handleSetMessages } =
 		useImagesContext();
@@ -17,14 +19,14 @@ export const useReadDropzoneImage = () => {
 		if (!selectedFile)
 			return handleSetMessages({
 				type: imageTypes.SET_ERROR_MESSAGE,
-				message: 'No se ha seleccionado ningún archivo',
+				message: t('predictionPage.alerts.noFileSelected'),
 				cleanMessage: true,
 			});
 
 		if (!fileTypes.includes(selectedFile.type))
 			return handleSetMessages({
 				type: imageTypes.SET_ERROR_MESSAGE,
-				message: 'El archivo seleccionado no tiene un formato de imagen válido',
+				message: t('predictionPage.alerts.noValidFormat'),
 				cleanMessage: true,
 			});
 
@@ -39,7 +41,7 @@ export const useReadDropzoneImage = () => {
 			// Set success message
 			handleSetMessages({
 				type: imageTypes.SET_MESSAGE,
-				message: `El archivo ${fileName} se ha cargado correctamente!`,
+				message: t('predictionPage.messages.fileLoadedSuccess', { fileName }),
 				cleanMessage: true,
 			});
 

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useIndexedDB } from 'react-indexed-db-hook';
 import { imageTypes } from '../types';
 import { useUiContext } from './useUiContext';
@@ -19,6 +20,7 @@ import {
 const apiPrefix = import.meta.env.DEV ? '/api/' : '/';
 
 export const useImagePredictForm = () => {
+	const [t] = useTranslation('global');
 	const { handleSetCurrentPage } = useUiContext();
 	const { add, getAll, deleteRecord } = useIndexedDB(dbStoreName);
 
@@ -44,7 +46,7 @@ export const useImagePredictForm = () => {
 		if (!readImage || !readImageFile)
 			return handleSetMessages({
 				type: imageTypes.SET_ERROR_MESSAGE,
-				message: 'No se ha cargado ninguna imagen',
+				message: t('predictionPage.alerts.imageNotFound'),
 				cleanMessage: true,
 			});
 
@@ -74,7 +76,7 @@ export const useImagePredictForm = () => {
 		if (classes === '')
 			return handleSetMessages({
 				type: imageTypes.SET_ERROR_MESSAGE,
-				message: 'Por favor, seleccione al menos una clase',
+				message: t('predictionPage.alerts.NoClassSelected'),
 				cleanMessage: true,
 			});
 
@@ -118,16 +120,16 @@ export const useImagePredictForm = () => {
 			});
 
 		toast.promise(request, {
-			loading: 'Detectando malezas...',
+			loading: t('predictionPage.messages.loadingPrediction'),
 			success: file => {
 				handleSetPredictionData({ data: file });
 				handleImageStatus({ status: status.COMPLETED });
 				handleSetCurrentPage({ pageName: pageNames.resultsPage });
-				return 'Detección de malezas exitosa!';
+				return t('predictionPage.messages.detectionSuccess');
 			},
 			error: () => {
 				handleImageStatus({ status: status.FAILED });
-				return 'Error al detectar malezas';
+				return t('predictionPage.alerts.detectionFailed');
 			},
 		});
 	};

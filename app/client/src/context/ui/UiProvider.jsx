@@ -7,12 +7,14 @@ import { pageNames, dropzoneStatus } from '@/constants';
 const initialState = {
 	currentPage: pageNames.predictPage,
 	dropzoneStatus: dropzoneStatus.SHOW_DROPZONE,
+	lang: 'es',
 };
 
 const init = () => {
 	const currentPage = localStorage.getItem('currentPage') || initialState.currentPage;
+	const lang = localStorage.getItem('lang') || initialState.lang;
 
-	return { ...initialState, currentPage };
+	return { ...initialState, currentPage, lang };
 };
 
 export const UiProvider = ({ children }) => {

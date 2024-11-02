@@ -1,8 +1,10 @@
 /* eslint-disable react/prop-types */
+import { useTranslation } from 'react-i18next';
 import { useHistoryTable } from '../hooks';
 import { FormButton } from '../common/components';
 
 export const HistoryTable = ({ predictedHistory }) => {
+	const [t] = useTranslation('global');
 	const {
 		table,
 		filtering,
@@ -21,14 +23,14 @@ export const HistoryTable = ({ predictedHistory }) => {
 					name='filtering'
 					value={filtering}
 					onChange={({ target }) => setFiltering(target.value)}
-					placeholder='Buscar un registro...'
+					placeholder={t('historyPage.historyTable.filterInput')}
 				/>
 
 				<FormButton
 					className='sm:px-4 min-[461px]:w-auto w-full hover:bg-red-700'
 					onClick={() => handleClearAllHistory()}
 				>
-					Limpiar todo el historial
+					{t('historyPage.historyTable.cleanHistory')}
 				</FormButton>
 			</div>
 			<div className='relative overflow-x-auto shadow-md rounded-lg'>
@@ -62,7 +64,7 @@ export const HistoryTable = ({ predictedHistory }) => {
 								{{ asc: ' ↓', desc: ' ↑' }[table.getColumn('date').getIsSorted() ?? null]}
 							</th>
 							<th scope='col' className='px-6 py-3' colSpan='3'>
-								Acciones
+								{t('historyPage.historyTable.actionsColumn')}
 							</th>
 						</tr>
 					</thead>
@@ -79,7 +81,7 @@ export const HistoryTable = ({ predictedHistory }) => {
 										className='sm:px-2 h-6 rounded-md'
 										onClick={() => showPrediction(row.getValue('id'))}
 									>
-										Ver
+										{t('historyPage.historyTable.viewButton')}
 									</FormButton>
 								</td>
 								<td className='px-6 py-2'>
@@ -87,7 +89,7 @@ export const HistoryTable = ({ predictedHistory }) => {
 										className='sm:px-2 h-6 rounded-md hover:bg-sky-800'
 										onClick={() => handleDownloadFile(row.getValue('id'))}
 									>
-										Descargar
+										{t('historyPage.historyTable.downloadButton')}
 									</FormButton>
 								</td>
 								<td className='px-6 py-2'>
@@ -95,7 +97,7 @@ export const HistoryTable = ({ predictedHistory }) => {
 										className='sm:px-2 h-6 rounded-md hover:bg-red-700'
 										onClick={() => handleDeleteHistory(row.getValue('id'))}
 									>
-										Eliminar
+										{t('historyPage.historyTable.deleteButton')}
 									</FormButton>
 								</td>
 							</tr>
@@ -109,14 +111,14 @@ export const HistoryTable = ({ predictedHistory }) => {
 					onClick={() => table.previousPage()}
 					disabled={!table.getCanPreviousPage()}
 				>
-					Anterior
+					{t('historyPage.historyTable.previousButton')}
 				</FormButton>
 				<FormButton
 					className='sm:px-4 h-6 rounded-md disabled:cursor-not-allowed'
 					onClick={() => table.nextPage()}
 					disabled={!table.getCanNextPage()}
 				>
-					Siguiente
+					{t('historyPage.historyTable.nextButton')}
 				</FormButton>
 				<p>-</p>
 				<FormButton
@@ -124,14 +126,14 @@ export const HistoryTable = ({ predictedHistory }) => {
 					onClick={() => table.firstPage()}
 					disabled={!table.getCanPreviousPage()}
 				>
-					Primera página
+					{t('historyPage.historyTable.firstPageButton')}
 				</FormButton>
 				<FormButton
 					className='sm:px-4 h-6 rounded-md disabled:cursor-not-allowed truncate'
 					onClick={() => table.lastPage()}
 					disabled={!table.getCanNextPage()}
 				>
-					Ultima página
+					{t('historyPage.historyTable.lastPageButton')}
 				</FormButton>
 			</div>
 		</>

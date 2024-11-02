@@ -9,23 +9,27 @@ import {
 } from '@tanstack/react-table';
 import { imageTypes } from '../types';
 import { useUiContext } from './useUiContext';
+import { useTranslation } from 'react-i18next';
 import { useImagesContext } from './useImagesContext';
 import { dbStoreName, pageNames, status } from '../constants';
 import { downloadFile, unzipImageResponse } from '../utils';
 
-const columns = [
-	{ header: 'id', accessorKey: 'id' },
-	{ header: 'Nombre', accessorKey: 'fileName' },
-	{ header: 'Fecha', accessorKey: 'date' },
-];
+
 
 export const useHistoryTable = ({ predictedHistory }) => {
+	const [t] = useTranslation('global');
 	const [sorting, setSorting] = useState([]);
 	const [filtering, setFiltering] = useState('');
 
 	const { getByID, deleteRecord, clear } = useIndexedDB(dbStoreName);
 	const { handleSetCurrentPage } = useUiContext();
 	const { handleSetPredictionData, handleImageStatus, handleSetMessages } = useImagesContext();
+
+	const columns = [
+		{ header: t('historyPage.historyTable.idColumn'), accessorKey: 'id' },
+		{ header: t('historyPage.historyTable.nameColumn'), accessorKey: 'fileName' },
+		{ header: t('historyPage.historyTable.dateColumn'), accessorKey: 'date' },
+	]
 
 	const table = useReactTable({
 		columns,
@@ -57,14 +61,14 @@ export const useHistoryTable = ({ predictedHistory }) => {
 			await clear();
 			handleSetMessages({
 				type: imageTypes.SET_MESSAGE,
-				message: 'Historial limpiado con éxito',
+				message: t('historyPage.messages.cleanHistory'),
 				cleanMessage: true,
 			});
 			handleImageStatus({ status: status.COMPLETED });
 		} catch (error) {
 			handleSetMessages({
 				type: imageTypes.SET_ERROR_MESSAGE,
-				message: 'Error al limpiar el historial',
+				message: t('historyPage.alerts.cleanHistory'),
 				cleanMessage: true,
 			});
 			handleImageStatus({ status: status.FAILED });
@@ -77,14 +81,14 @@ export const useHistoryTable = ({ predictedHistory }) => {
 			await deleteRecord(id);
 			handleSetMessages({
 				type: imageTypes.SET_MESSAGE,
-				message: 'Registro eliminado con éxito',
+				message: t('historyPage.messages.deleteHistory'),
 				cleanMessage: true,
 			});
 			handleImageStatus({ status: status.COMPLETED });
 		} catch (error) {
 			handleSetMessages({
 				type: imageTypes.SET_ERROR_MESSAGE,
-				message: 'Error al eliminar el registro',
+				message: t('historyPage.alerts.deleteHistory'),
 				cleanMessage: true,
 			});
 			handleImageStatus({ status: status.FAILED });

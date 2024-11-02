@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useDropzone } from 'react-dropzone';
+import { useTranslation } from 'react-i18next';
 import { twMerge } from 'tailwind-merge';
 
 const defaultStyles =
@@ -12,6 +13,7 @@ export const SquareDropzone = ({
 	maxFiles = 1,
 	disabled = false,
 }) => {
+	const [t] = useTranslation('global');
 	const { isDragAccept, getRootProps, getInputProps } = useDropzone({
 		disabled,
 		maxFiles,
@@ -19,7 +21,7 @@ export const SquareDropzone = ({
 	});
 
 	const renderText = () => {
-		if (isDragAccept) return 'Suelta el archivo para subirlo!';
+		if (isDragAccept) return t('predictionPage.dropzone.isDragAcceptedMessage');
 
 		if (validFileFormatMessage) return validFileFormatMessage;
 
@@ -48,7 +50,8 @@ export const SquareDropzone = ({
 				</svg>
 
 				<p className='mb-2'>
-					<span>Seleccionar un archivo</span> o arrastre y suéltelo aquí.
+					<span>{t('predictionPage.dropzone.selectFileMessage')}</span>{' '}
+					{t('predictionPage.dropzone.dragFileMessage')}
 				</p>
 				<p className='text-gray-500 dark:text-gray-400'>{renderText()}</p>
 			</div>

@@ -2,14 +2,23 @@ import { useContext } from 'react';
 import { imageTypes, uiTypes } from '../types';
 import { ImagesContext, UiContext } from '../context';
 import { dropzoneStatus as constantDropzoneStatus } from '../constants';
+import { useTranslation } from 'react-i18next';
 
 export const useUiContext = () => {
-	const { currentPage, dropzoneStatus, uiDispatch } = useContext(UiContext);
+	const [, i18n] = useTranslation('global')
+	const { currentPage, lang, dropzoneStatus, uiDispatch } = useContext(UiContext);
 	const { imagesDispatch } = useContext(ImagesContext);
 
 	const handleSetCurrentPage = ({ pageName }) => {
 		localStorage.setItem('currentPage', pageName);
 		uiDispatch({ type: uiTypes.SET_CURRENT_PAGE, payload: pageName });
+	};
+
+	const handleSetCurrentLang = ({ lang }) => {
+		lang = lang === 'es' ? 'en' : 'es';
+		i18n.changeLanguage(lang);
+		localStorage.setItem('lang', lang);
+		uiDispatch({ type: uiTypes.SET_CURRENT_LANG, payload: lang });
 	};
 
 	const handleCleanDropzoneData = () => {
@@ -35,11 +44,13 @@ export const useUiContext = () => {
 
 	return {
 		// state
+		lang,
 		currentPage,
 		dropzoneStatus,
 
 		// actions
 		handleSetCurrentPage,
+		handleSetCurrentLang,
 		handleCleanDropzoneData,
 		handleDropzoneVisibility,
 	};

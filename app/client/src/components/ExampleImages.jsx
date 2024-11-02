@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useImagesContext, useUiContext } from '../hooks';
 import { dropzoneStatus, exampleImagePaths } from '../constants';
 
 export const ExampleImages = () => {
+	const [t] = useTranslation('global');
 	const [imageSelected, setImageSelected] = useState('');
 	const { handleSaveImageInContext } = useImagesContext();
 	const { handleDropzoneVisibility } = useUiContext();
@@ -26,13 +28,15 @@ export const ExampleImages = () => {
 
 	return (
 		<div className='mb-4 md:mb-0 grid grid-cols-3 gap-x-4 gap-y-2'>
-			<h2 className='w-full text-center font-bold col-span-3'>Imágenes de prueba</h2>
+			<h2 className='w-full text-center font-bold col-span-3'>
+				{t('predictionPage.subtitles.imageExamples')}
+			</h2>
 
 			{exampleImagePaths.map((path, index) => (
 				<div key={index} className='relative max-w-xs overflow-hidden bg-cover bg-no-repeat'>
 					<img
 						src={path}
-						alt={`Imagen de prueba ${index + 1}`}
+						alt={`${t('predictionPage.exampleImages.imgAlt')} ${index + 1}`}
 						className='w-full h-full rounded-lg'
 					/>
 					<div
@@ -40,7 +44,9 @@ export const ExampleImages = () => {
 						onClick={() => handleSetCurrentImage(path)}
 					>
 						<p className='font-bold text-sm sm:text-lg'>
-							{imageSelected === path ? 'Seleccionada' : 'Elegir'}
+							{imageSelected === path
+								? t('predictionPage.exampleImages.imgSelected')
+								: t('predictionPage.exampleImages.imgToSelect')}
 						</p>
 					</div>
 				</div>
