@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useIndexedDB } from 'react-indexed-db-hook';
 import {
 	getCoreRowModel,
@@ -8,11 +9,10 @@ import {
 	useReactTable,
 } from '@tanstack/react-table';
 import { imageTypes } from '../types';
+import { downloadFile } from '../utils';
 import { useUiContext } from './useUiContext';
-import { useTranslation } from 'react-i18next';
 import { useImagesContext } from './useImagesContext';
 import { dbStoreName, pageNames, status } from '../constants';
-import { downloadFile, unzipImageResponse } from '../utils';
 
 
 
@@ -44,8 +44,7 @@ export const useHistoryTable = ({ predictedHistory }) => {
 	});
 
 	const showPrediction = async id => {
-		const { file } = await getByID(id);
-		const data = await unzipImageResponse(file);
+		const data = await getByID(id);
 		handleSetPredictionData({ data });
 		handleSetCurrentPage({ pageName: pageNames.resultsPage });
 	};

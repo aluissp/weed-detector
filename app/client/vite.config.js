@@ -21,6 +21,7 @@ export default defineConfig(({ command, mode }) => {
 					rewrite: path => path.replace(/^\/api/, ''),
 				},
 			},
+			// watch: { usePolling: true }, // For WSL2 in Windows
 		},
 	};
 });

@@ -76,14 +76,18 @@ export const useImagePredictForm = () => {
 		if (classes === '')
 			return handleSetMessages({
 				type: imageTypes.SET_ERROR_MESSAGE,
-				message: t('predictionPage.alerts.NoClassSelected'),
+				message: t('predictionPage.alerts.noClassSelected'),
 				cleanMessage: true,
 			});
 
 		// Set loading status
 		handleImageStatus({ status: status.LOADING });
 
+		// Set classes keys
 		data.classes = classes;
+
+		// If save_txt is not set, use save_conf
+		data.save_txt = data.save_txt || data.save_conf;
 
 		// Generate query params
 		const queryParams = new URLSearchParams(data).toString();
@@ -107,22 +111,17 @@ export const useImagePredictForm = () => {
 					await deleteRecord(first.id);
 				}
 
-				const dataToSerialize = {
-					name: file.jsonData.name,
-					fileName: file.jsonData.fileName,
-					date: format(new Date(), 'dd/MM/yyyy HH:mm:ss'),
-					file: file.file,
-				};
+				const dataToSerialize = { ...file, date: format(new Date(), 'dd/MM/yyyy HH:mm:ss') };
 
 				await add(dataToSerialize);
 
-				return file;
+				return dataToSerialize;
 			});
 
 		toast.promise(request, {
 			loading: t('predictionPage.messages.loadingPrediction'),
-			success: file => {
-				handleSetPredictionData({ data: file });
+			success: data => {
+				handleSetPredictionData({ data });
 				handleImageStatus({ status: status.COMPLETED });
 				handleSetCurrentPage({ pageName: pageNames.resultsPage });
 				return t('predictionPage.messages.detectionSuccess');

@@ -13,20 +13,16 @@ export const ShowPrediction = () => {
 
 	if (!predictionData) return <EmptyResultsCard />;
 
-	const tableData = predictionData?.jsonData?.tableData;
+	const { name, image, file, summary, speed, totalInfestationRate } = predictionData;
 
-	const speed = predictionData?.jsonData?.speed;
-
-	const numberDetections = predictionData?.jsonData?.summary?.length;
-
-	const name = predictionData?.jsonData?.name;
+	const numberDetections = predictionData?.predictions?.length;
 
 	return (
 		<section className='flex flex-col md:grid md:grid-cols-2 gap-x-6 items-start md:justify-between w-full text-white animate-fade'>
 			{/* Left */}
 			<div className='flex flex-col w-full items-center justify-center mb-4'>
 				<Zoom>
-					<img src={predictionData?.image} alt='Imagen predicha' className='rounded-lg max-h-96' />
+					<img src={image} alt='Imagen predicha' className='rounded-lg max-h-96' />
 				</Zoom>
 			</div>
 			<div className='flex flex-col w-full'>
@@ -45,17 +41,21 @@ export const ShowPrediction = () => {
 					<strong>{t('showResultsPage.summary.processingTimeLabel')}:</strong>{' '}
 					{t('showResultsPage.summary.valueFormat', { value: speed?.preprocess.toFixed(4) })}
 				</p>
-				<p className='mb-6'>
+				<p className='mb-2'>
 					<strong>{t('showResultsPage.summary.postprocessingTimeLabel')}:</strong>{' '}
 					{t('showResultsPage.summary.valueFormat', { value: speed?.postprocess.toFixed(4) })}
 				</p>
+				<p className='mb-6'>
+					<strong>{t('showResultsPage.summary.totalInfestationRateLabel')}:</strong>{' '}
+					{totalInfestationRate?.toFixed(2) + ' %'}
+				</p>
 
-				<PredictionsTable tableData={tableData} />
+				<PredictionsTable tableData={summary} />
 
 				<div className='flex justify-end'>
 					<FormButton
 						className='mt-4'
-						onClick={() => downloadFile(predictionData?.file, `inference_${name}`, 'zip')}
+						onClick={() => downloadFile(file, `inference_${name}`, 'zip')}
 					>
 						<FaDownload />
 						{t('showResultsPage.downloadResults')}
