@@ -91,8 +91,8 @@
     "predictionsTable": {
       "nameColumn": "Name",
       "colorColumn": "Color",
-      "numberPlantsColumn": "Number of plants",
-      "confidenceColumn": "Confidence average"
+      "countPlantsColumn": "Count",
+      "coverageColumn": "Coverage (%)"
     },
     "subtitle": "Results",
     "summary": {
@@ -100,6 +100,7 @@
       "inferenceTimeLabel": "Inference time",
       "processingTimeLabel": "Processing time",
       "postprocessingTimeLabel": "Postprocessing time",
+      "totalInfestationRateLabel": "Total infestation rate",
       "valueFormat": "{{value}} milliseconds"
     },
     "downloadResults": "Download results"
