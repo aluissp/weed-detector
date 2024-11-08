@@ -5,7 +5,6 @@ export const defaultPredictParameters = Object.freeze({
 	[inputNames.max_det]: 300,
 	[inputNames.line_width]: 3,
 	[inputNames.conf]: 0.25,
-	[inputNames.iou]: 0.7,
 	[inputNames.augment]: false,
 	[inputNames.save_crop]: false,
 	[inputNames.save_txt]: false,

@@ -100,16 +100,11 @@ export const PredictImage = () => {
 							})}
 						/>
 
-						<RangeInput
-							id={inputNames.imgsz}
-							name={inputNames.imgsz}
-							labelText={t('predictionPage.inferenceParameters.imageSize')}
-							step={64}
-							control={control}
-							min={448}
-							max={1024}
-							thickNumber={11}
-							className='col-span-2 sm:col-span-1'
+						<ToggleInput
+							id={inputNames.augment}
+							labelText={t('predictionPage.inferenceParameters.augment')}
+							className='col-span-2 sm:col-span-1 md:mt-3'
+							{...register(inputNames.augment)}
 						/>
 
 						<RangeInput
@@ -121,26 +116,19 @@ export const PredictImage = () => {
 							min={0.01}
 							max={1}
 							thickNumber={9}
-							className='col-span-2 sm:col-span-1'
+							className='my-3 sm:my-5 col-span-2 sm:col-span-1'
 						/>
 
 						<RangeInput
-							id={inputNames.iou}
-							name={inputNames.iou}
-							labelText={t('predictionPage.inferenceParameters.iou')}
-							step={0.01}
+							id={inputNames.imgsz}
+							name={inputNames.imgsz}
+							labelText={t('predictionPage.inferenceParameters.imageSize')}
+							step={32}
 							control={control}
-							min={0.01}
-							max={1}
-							thickNumber={9}
-							className='col-span-2 sm:col-span-1'
-						/>
-
-						<ToggleInput
-							id={inputNames.augment}
-							labelText={t('predictionPage.inferenceParameters.augment')}
-							className='my-3 sm:my-5 col-span-2'
-							{...register(inputNames.augment)}
+							min={448}
+							max={1024}
+							thickNumber={11}
+							className='my-3 sm:my-5 col-span-2 sm:col-span-1'
 						/>
 
 						<h3 className='w-full text-left font-bold mt-3 col-span-2 text-base'>

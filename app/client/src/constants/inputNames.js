@@ -3,7 +3,6 @@ export const inputNames = Object.freeze({
 	max_det: 'max_det',
 	line_width: 'line_width',
 	conf: 'conf',
-	iou: 'iou',
 	augment: 'augment',
 	save_crop: 'save_crop',
 	save_txt: 'save_txt',
