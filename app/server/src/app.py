@@ -10,12 +10,12 @@ app.config['imgs'] = get_folderpath(__file__, 'imgs')
 app.config['models'] = get_folderpath(__file__, 'weights')
 
 
-@app.get("/")
+@app.get('/')
 def show_homepage():
     return render_template('index.html')
 
 
-@app.post("/predict")
+@app.post('/predict')
 def predict_weeds():
     try:
         image = request.files['image']

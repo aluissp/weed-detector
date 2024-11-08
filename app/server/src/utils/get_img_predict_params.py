@@ -2,12 +2,12 @@ from werkzeug.datastructures import ImmutableMultiDict
 
 
 # All arguments
-['conf', 'iou', 'imgsz', 'max_det',
+['conf', 'imgsz', 'max_det',
  'augment', 'classes', 'save_crop',
  'save_txt', 'save_conf', 'show_labels',
  'show_conf', 'line_width']
 
-float_arguments = ['conf', 'iou']
+float_arguments = ['conf']
 integer_arguments = ['imgsz', 'max_det', 'line_width']
 list_arguments = ['classes']
 boolean_arguments = ['augment', 'save_crop', 'save_txt',
