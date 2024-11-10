@@ -9,7 +9,7 @@ export const PredictionsTable = ({ tableData }) => {
 		[modelClassKeys.papa, t('modelClasses.potato'), t('modelClassColors.potato')],
 		[modelClassKeys.diente_leon, t('modelClasses.dandelion'), t('modelClassColors.dandelion')],
 		[modelClassKeys.kikuyo, t('modelClasses.grass'), t('modelClassColors.grass')],
-		[modelClassKeys.lengua_vaca, t('modelClasses.cowTongue'), t('modelClassColors.cowTongue')],
+		[modelClassKeys.lengua_vaca, t('modelClasses.broadleafDock'), t('modelClassColors.broadleafDock')],
 		[modelClassKeys.otro, t('modelClasses.others'), t('modelClassColors.others')],
 	];
 

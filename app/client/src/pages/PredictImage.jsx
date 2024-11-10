@@ -48,7 +48,7 @@ export const PredictImage = () => {
 					/>
 					<ToggleInput
 						id={inputNames.lengua_vaca}
-						labelText={t('modelClasses.cowTongue')}
+						labelText={t('modelClasses.broadleafDock')}
 						{...register(inputNames.lengua_vaca)}
 					/>
 					<ToggleInput

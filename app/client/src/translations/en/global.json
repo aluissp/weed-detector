@@ -1,14 +1,14 @@
 {
   "modelClasses": {
     "potato": "Potato",
-    "cowTongue": "Cow tongue",
+    "broadleafDock": "Broadleaf dock",
     "grass": "Grass",
     "dandelion": "Dandelion",
     "others": "Others"
   },
   "modelClassColors": {
     "potato": "black",
-    "cowTongue": "white",
+    "broadleafDock": "white",
     "grass": "sky-blue",
     "dandelion": "blue",
     "others": "green"

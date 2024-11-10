@@ -1,14 +1,14 @@
 {
   "modelClasses": {
     "potato": "Papa",
-    "cowTongue": "Lengua de vaca",
+    "broadleafDock": "Lengua de vaca",
     "grass": "Kikuyo",
     "dandelion": "Diente de león",
     "others": "Otros"
   },
   "modelClassColors": {
     "potato": "negro",
-    "cowTongue": "blanco",
+    "broadleafDock": "blanco",
     "grass": "celeste",
     "dandelion": "azul",
     "others": "verde"
