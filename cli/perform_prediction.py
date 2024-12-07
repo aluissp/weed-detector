@@ -63,7 +63,7 @@ class PerformPrediction:
 
         self.model = RTDETR(args['model_path'])
         self.image = cv2.imread(self.image_path)
-        self.destination_path = 'out/predictions'
+        self.destination_path = os.path.join('out', 'predictions')
 
         self.detections = None
         self.annotations = None
