@@ -59,7 +59,7 @@ class PerformPrediction:
         self.show_label = args['show_label']
 
         self.labels = ['diente_leon', 'kikuyo', 'lengua_vaca', 'otros', 'papa']
-        self.color_palette = sv.ColorPalette.from_hex(['#ffd803', '#0cdbeb', '#e16162', '#00e0b5', '#101e68'])
+        self.color_palette = sv.ColorPalette.from_hex(['#ffd803', '#0cdbeb', '#e16162', '#89659b', '#101e68'])
 
         self.model = RTDETR(args['model_path'])
         self.image = cv2.imread(self.image_path)
