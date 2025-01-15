@@ -1,8 +1,7 @@
 import argparse
 import fix_paths
 from imutils import paths
-from datasets import ManualDatasetSplitter
-from preprocessing import AspectAwarePreprocessor
+from preprocessing import AspectAwarePreprocessor, ManualDatasetSplitter
 
 
 ap = argparse.ArgumentParser()

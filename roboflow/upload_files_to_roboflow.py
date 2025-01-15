@@ -1,7 +1,7 @@
 import yaml
 import fix_paths
 from imutils import paths
-from datasets import UploadDatasetRoboflow
+from preprocessing import UploadDatasetRoboflow
 
 
 with open('roboflow.config.yaml') as file:
