@@ -24,7 +24,7 @@ weed_detector
 ├── out
 ├── preprocessing
 ├── roboflow
-├── utils
+└── utils
 ```
 
 - `app`: Contains client and server applications for the weed detector, containerized in Docker.
