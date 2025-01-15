@@ -1,6 +1,6 @@
 # Weed detector
 
-The Real-Time Detection Transformer (RT-DETR) architecture was employed for the automated detection of various weeds, including kikuyo, dandelion, broadleaf dock, and other unidentified species, within potato fields. A DJI Mavic 2 Pro drone captured the dataset at an altitude of 9-10 meters while traveling at 1 m/s to ensure broader coverage of the crop field.
+The Real-Time Detection Transformer (RT-DETR) architecture was employed for the automated detection of various weeds, including kikuyo, dandelion, broadleaf dock, and other unidentified species, within potato fields. A DJI Mavic 2 Pro drone captured the dataset at an altitude of 9-10 meters while traveling at 1 m/s to ensure broader coverage of the crop field. The pre-trained [Ultralytics RT-DETR](https://docs.ultralytics.com/models/rtdetr/) model was used for this task.
 
 ## Table of contents
 
