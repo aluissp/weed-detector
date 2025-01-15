@@ -1,0 +1,16 @@
+name: weed-detector
+channels:
+  - pytorch
+  - nvidia
+  - anaconda
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pytorch
+  - torchvision
+  - torchaudio
+  - pytorch-cuda
+  - ultralytics=8.3.13
+  - wandb
+  - imutils
+  - supervision
