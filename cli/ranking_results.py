@@ -144,7 +144,7 @@ class RankingResults:
 
                     # Save in excel file
                     key = key.replace('metrics/', '').replace('(B)', '')
-                    df.to_excel(writer, sheet_name=f'{name.replace('_metrics', '')}-{key}-ranking', index=False)
+                    df.to_excel(writer, sheet_name=f"{name.replace('_metrics', '')}-{key}-ranking", index=False)
 
             summary_df.to_excel(writer, sheet_name='summary', index=False)
 
