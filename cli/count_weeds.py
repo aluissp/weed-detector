@@ -21,7 +21,7 @@ ap.add_argument(
     help='View image?'
 )
 ap.add_argument(
-    '-i', '--inference-video-name', default='inference_video.avi',
+    '-i', '--inference-video-name', default='inference_video.mp4',
     help='Name of the inference video.'
 )
 

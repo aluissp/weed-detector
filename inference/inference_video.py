@@ -38,12 +38,11 @@ class InferenceVideo:
 
         print('[INFO] Inferring on video...')
 
-        counter = ObjectCounter()
-        counter.set_args(
+        counter = ObjectCounter(
+            names=self.classes_names,
             view_img=self.view_img,
             reg_pts=self.region_points,
-            classes_names=self.classes_names,
-            line_thickness=2,
+            line_thickness=2
         )
 
         while self.capture.isOpened():
